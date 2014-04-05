@@ -20,7 +20,6 @@
             </ul>
 
             <section class="top-bar-section">
-                <!-- Right Nav Section -->
                 <ul class="right">
                     <li class="divider"></li>
                     <li><a href="#">Library</a></li>
@@ -34,6 +33,8 @@
                 </ul>
             </section>
         </nav>
+
+        {% block content %}{% endblock %}
 
         <script src="/static/js/vendor/jquery.js"></script>
         <script src="/static/js/foundation.min.js"></script>
