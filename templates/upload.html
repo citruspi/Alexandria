@@ -4,27 +4,210 @@
 
     <div class="previewsContainer" style="display: none;"></div>
 
-    <div id="upload-area" style="height:100%">
-        <div class="vertical-center">
-            <center><h2>Drag and Drop an eBook Here</h2><h3><sup>&#10033;</sup>.epub, .mobi, and .pdf are supported</center>
+    <div id="notice">
+        <center><h2>drag and drop an ebook here</h2><h3><sup>&#10033;</sup>.epub, .mobi, and .pdf are supported</center>
+    </div>
+
+    <div class="row">
+
+        <div class="large-6 columns">
+
+            <div id="myModal" class="reveal-modal reveal-modal-small" data-reveal>
+
+                <form onsubmit="getResults(); return false;">
+
+                    <div class="row collapse">
+
+                        <div class="large-10 columns">
+
+                            <input type="text" placeholder="Search by ISBN or title" id="query">
+
+                        </div>
+
+                        <div class="large-2 columns">
+
+                            <a href="#" class="button postfix">SEARCH</a>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <div id="results">
+                <hr>
+
+                <form>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <select id="select">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row" id="result">
+                        <!-- -->
+                    </div>
+                </form>
+                </div>
+
+            </div>
+
         </div>
+
     </div>
 
     {% include "scripts.html" %}
-    
+
     <script src="/static/js/flexverticalcenter.js"></script>
     <script src="/static/js/dropzone.js"></script>
-    
-    <script>
-        (function(window, document, undefined) {
-            window.flexVerticalCenter(document.getElementsByClassName('vertical-center'));
-        })(window, document);
+    <script src="/static/js/mustache.js"></script>
 
-        $(document.body).dropzone({ 
+    <script id="template" type="x-tmpl-mustache">
+        {% raw %}
+        <div class="large-3 columns">
+            <img src="{{ cover }}" width="100%">
+        </div>
+        <div class="large-9 columns">
+            {{ #title }}
+            <dl>
+                <dt>Title</dt>
+                <dd>{{ title }}</dd>
+            </dl>
+            {{ /title }}
+            {{ #subtitle }}
+            <dl>
+                <dt>Subtitle</dt>
+                <dd>{{ subtitle }}</dd>
+            </dl>
+            {{ /subtitle }}
+            <dl>
+                <dt>Author(s)</dt>
+                {{ #authors }}
+                <dd>{{ . }}</dd>
+                {{ /authors }}
+            </dl>
+            {{ #description }}
+            <dl>
+                <dt>Description</dt>
+                <dd>{{ description }}</dd>
+            </dl>
+            {{ /description }}
+        </div>
+        {% endraw %}
+    </script>
+
+    <script>
+
+        window.flexVerticalCenter(document.getElementById('notice'));
+
+        $(document.body).dropzone({
             url: "/upload",
             paramName: "file",
-            clickable: false,
+            clickable: true,
             previewsContainer: ".previewsContainer",
+            success: function(file, response) {
+                document.getElementById('query').value = file.name.split('.')[0];
+                $('#myModal').foundation('reveal', 'open');
+            }
         });
+
+        $('#select').bind('change',function(){
+            var e = document.getElementById("select");
+            var value = e.options[e.selectedIndex].value;
+            displayResult(value);
+        });
+
+        function listResults () {
+            window.results.forEach(function(i) {
+
+                var opt = document.createElement('option');
+                opt.value = i['id'];
+                opt.innerHTML = (function () {
+
+                    var title = i.volumeInfo['title'] + ' - ';
+
+                    if (i.volumeInfo['authors'].length < 2) {
+                        title += i.volumeInfo['authors'][0] + ' ';
+                    }
+
+                    else {
+                        i.volumeInfo['authors'].forEach(function(author) {
+                            title += author + '; ';
+                        });
+                    }
+
+                    return title + '(' + i.volumeInfo['publishedDate'].substring(0,4) + ')';
+
+                })();
+
+                document.getElementById('select').appendChild(opt);
+
+            });
+        }
+
+        function displayResult (id) {
+            window.results.forEach(function(i){
+                if (i['id'] == id){
+                    var template = $('#template').html();
+                    Mustache.parse(template);   // optional, speeds up future uses
+                    var rendered = Mustache.render(template, {
+                        title: i.volumeInfo['title'],
+                        subtitle: i.volumeInfo['subtitle'],
+                        authors: i.volumeInfo['authors'],
+                        description: i.volumeInfo['description'],
+                        "cover": function () {
+                            var covers = i.volumeInfo['imageLinks'];
+                            if (covers['extraLarge'] != null && covers['extraLarge'] != '') {
+                                return covers['extraLarge'];
+                            }
+                            else if (covers['large'] != null && covers['large'] != '') {
+                                return covers['large'];
+                            }
+                            else if (covers['medium'] != null && covers['medium'] != '') {
+                                return covers['medium'];
+                            }
+                            else if (covers['small'] != null && covers['small'] != '') {
+                                return covers['small'];
+                            }
+                            else if (covers['thumbnail'] != null && covers['thumbnail'] != '') {
+                                return covers['thumbnail'];
+                            }
+                            else if (covers['smallThumbnail'] != null && covers['smallThumbnail'] != '') {
+                                return covers['smallThumbnail'];
+                            }
+                            else {
+                                return '';
+                            }                            
+                        }
+                    });
+                    $('#result').html(rendered);
+                }
+            });
+        }
+
+        function getResults() {
+
+            query = document.getElementById('query').value;
+
+            if (query != null && query != '') {
+
+                $("#select").empty();
+
+                $.getJSON( "https://www.googleapis.com/books/v1/volumes?q="+query, function( data ) {
+
+                    window.results = data['items'];
+
+                    listResults();
+                    displayResult(data['items'][0]['id']);
+
+
+                });
+
+            }
+
+            return false;
+        }
     </script>
 {% endblock %}
