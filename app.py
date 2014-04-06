@@ -30,6 +30,19 @@ def not_even_one(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def is_administrator(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        user = db.Users.find_one({'openid': session['openid']})
+
+        if user['role'] != 'Administrator':
+
+            return redirect(url_for('library'))
+
+        return f(*args, **kwargs)
+    return decorated_function
+
 def authenticated(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -75,16 +88,65 @@ def create_or_login(resp):
     session['openid'] = resp.identity_url
     user = db.Users.find_one({'openid':resp.identity_url})
     if user is not None:
-        flash(u'Successfully signed in')
         g.user = user
     else:
-        db.Users.insert({
-            'name': resp.fullname or resp.nickname,
-            'email': resp.email,
-            'openid': session['openid']
-        })
+
+        if db.Users.find_one() is None:
+
+            db.Users.insert({
+                'name': resp.fullname or resp.nickname,
+                'email': resp.email,
+                'openid': session['openid'],
+                'role': 'Administrator'
+            })
+
+            db.Settings.insert({
+                'authorized': [resp.email]
+            })
+
+        else:
+
+            if resp.email in db.Settings.find_one()['authorized']:
+
+                db.Users.insert({
+                    'name': resp.fullname or resp.nickname,
+                    'email': resp.email,
+                    'openid': session['openid'],
+                    'role': 'User'
+                })
+
+            else:
+
+                redirect(url_for('logout'))
 
     return redirect(oid.get_next_url())
+
+@app.route('/settings', methods=['GET', 'POST'])
+@authenticated
+@is_administrator
+def settings():
+
+    if request.method == 'GET':
+
+        return render_template('settings.html', setting=db.Settings.find_one())
+
+    elif request.method == 'POST':
+
+        authorized = request.form.get('authorized').split('\r\n')
+
+        setting = db.Settings.find_one()
+
+        setting['authorized'] = []
+
+        for auth in authorized:
+
+            if auth != '':
+
+                setting['authorized'].append(auth)
+
+        db.Settings.update({'_id':setting['_id']}, setting, True)
+
+        return ''
 
 @app.route('/library')
 @authenticated
@@ -124,6 +186,7 @@ def byauthor(author):
 
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 @authenticated
+@is_administrator
 def edit(id):
 
     book = db.Books.find({"id": id})[0]
@@ -155,6 +218,7 @@ def book(id):
 
 @app.route('/upload', methods=['GET', 'POST'])
 @authenticated
+@is_administrator
 def upload():
 
     if request.method == 'GET':
@@ -179,6 +243,7 @@ def upload():
 
 @app.route('/confirm/<filename>/<id>', methods=['POST'])
 @authenticated
+@is_administrator
 def confirm(filename, id):
 
     r = requests.get('https://www.googleapis.com/books/v1/volumes/'+id).json()
@@ -272,7 +337,6 @@ def confirm(filename, id):
         else:
 
             book['cover'] = ''
-
 
     book['files'] = []
 

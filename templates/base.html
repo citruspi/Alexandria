@@ -27,10 +27,12 @@
                     <li class="divider"></li>
                     <li id="library_menu"><a href="/library"> <i class="fa fa-book"></i> &nbsp;Library</a></li>
                     <li class="divider"></li>
+                    {% if g.user['role'] == "Administrator" %}
                     <li id="upload_menu"><a href="/upload"> <i class="fa fa-upload"></i> &nbsp;Upload</a></li>
                     <li class="divider"></li>
-                    <li><a href="/settings"> <i class="fa fa-cogs"></i> &nbsp;Settings</a></li>
+                    <li id="settings_menu"><a href="/settings"> <i class="fa fa-cogs"></i> &nbsp;Settings</a></li>
                     <li class="divider"></li>
+                    {% endif %}
                     <li><a href="/logout"> <i class="fa fa-power-off"></i> &nbsp;Sign Out {{ g.user['name'].split(' ')[0] }}</a></li>
                     <li class="divider"></li>
                 </ul>
@@ -51,6 +53,11 @@
                 case 'library':
 
                     document.getElementById("library_menu").className = "active";
+                    break;
+
+                case 'settings':
+
+                    document.getElementById("settings_menu").className = "active";
                     break;
 
                 default:

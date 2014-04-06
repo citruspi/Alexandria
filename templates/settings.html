@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row" style="height:5%"></div>
+
+<form name="edit">
+
+    <div class="row">
+
+        <div class="large-2 large-offset-10 columns">
+
+            <a href="#" class="button postfix" onclick="save();">SAVE</a>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Authorized Users (One Per Line)
+                <textarea style="resize: none;" name="authorized" rows="10">{% for authorized in setting['authorized'] %}{{ authorized + '\n' }}{% endfor %}</textarea>
+            </label>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="row">
+
+        <div class="large-2 large-offset-10 columns">
+
+            <a href="#" class="button postfix" onclick="save();">SAVE</a>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% include 'scripts.html' %}
+
+<script type="text/javascript">
+
+    function save(){
+        $.post("/settings", $( document.forms.edit ).serialize());
+    }
+
+</script>
+
+{% endblock %}
