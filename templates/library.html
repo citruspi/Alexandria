@@ -2,4 +2,24 @@
 
 {% block content %}
 
+<div class="row" style="height:5%"></div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <ul class="small-block-grid-5">
+            {% for book in books %}
+            <li>
+                <a class="th">
+                    <img src="{{ book['cover']}}" width="100%"/>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+</div>
+
 {% endblock %}

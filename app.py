@@ -14,7 +14,7 @@ db = client[app.config['MONGODB']]
 @app.route('/library')
 def library():
 
-    return render_template('library.html')
+    return render_template('library.html', books=db.Books.find())
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
