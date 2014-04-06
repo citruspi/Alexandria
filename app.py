@@ -21,6 +21,13 @@ def download(id, format):
 
     return send_from_directory(app.config['LIB_DIR'], id+'.'+format)
 
+@app.route('/genre/<genre>')
+def bygenre(genre):
+
+    books = db.Books.find({'genres':genre})
+
+    return render_template('library.html', books=books)
+
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 def edit(id):
 
