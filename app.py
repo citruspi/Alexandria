@@ -27,6 +27,11 @@ def upload():
 
             return jsonify(filename=filename)
 
+@app.route('/confirm/<filename>/<id>', methods=['POST'])
+def confirm(filename, id):
+
+    return ''
+
 if __name__ == "__main__":
 
 	  app.run()

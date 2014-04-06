@@ -37,7 +37,7 @@
                 <div id="results">
                 <hr>
 
-                <form>
+                <form onsubmit="confirmResult(); return false;" name="confirm">
 
                     <div class="row">
                         <div class="large-12 columns">
@@ -48,6 +48,16 @@
 
                     <div class="row" id="result">
                         <!-- -->
+                    </div>
+
+                    <div class="row">
+
+                        <div class="large-2 large-offset-10 columns">
+
+                            <a href="#" class="button postfix" onclick="confirmResult();">CONFIRM</a>
+
+                        </div>
+
                     </div>
                 </form>
                 </div>
@@ -111,6 +121,7 @@
                 document.getElementById('query').value = file.name.split('.')[0];
                 getResults();
                 $('#myModal').foundation('reveal', 'open');
+                window.token = response['filename'];
             }
         });
 
@@ -203,6 +214,11 @@
             $("#select").empty();
             $("#result").empty();
         });
+
+        function confirmResult() {
+            $.post("/confirm/"+window.token+'/'+document.getElementById("select").options[document.getElementById("select").selectedIndex].value);
+            return false;
+        }
 
         function getResults() {
 
