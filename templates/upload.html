@@ -109,6 +109,7 @@
             previewsContainer: ".previewsContainer",
             success: function(file, response) {
                 document.getElementById('query').value = file.name.split('.')[0];
+                getResults();
                 $('#myModal').foundation('reveal', 'open');
             }
         });
