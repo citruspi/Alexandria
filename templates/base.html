@@ -25,7 +25,7 @@
                     <li class="divider"></li>
                     <li><a href="#">Library</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Upload</a></li>
+                    <li id="upload_menu"><a href="#">Upload</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Settings</a></li>
                     <li class="divider"></li>
@@ -36,6 +36,20 @@
         </nav>
 
         {% block content %}{% endblock %}
+
+        <script type="text/javascript">
+            switch (window.location.pathname.split('/')[1]) {
+
+                case 'upload':
+
+                    document.getElementById("upload_menu").className = "active";
+                    break;
+
+                default:
+
+                    ''
+            }
+        </script>
 
     </body>
 
