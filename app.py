@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
@@ -18,11 +17,15 @@ def upload():
 
         if file:
 
-            filename = secure_filename(file.filename)
+            filename = os.urandom(30).encode('hex')
+
+            while os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+
+                filename = os.urandom(30).encode('hex')
+
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             return jsonify(filename=filename)
-
 
 if __name__ == "__main__":
 
