@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 import shutil
+import requests
 
 app = Flask(__name__)
 app.config.from_object('config.Debug')
@@ -31,9 +32,13 @@ def upload():
 @app.route('/confirm/<filename>/<id>', methods=['POST'])
 def confirm(filename, id):
 
+    r = requests.get('https://www.googleapis.com/books/v1/volumes/s1gVAAAAYAAJ').json()
+
+    print r['id']
+
     if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
 
-        shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], filename))
+        shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], r['id']+'.'+filename.split('.')[-1]))
 
     return ''
 
