@@ -144,6 +144,33 @@ def confirm(filename, id):
 
     db.Books.insert(book)
 
+    if not db.Genres.find_one():
+
+        genre_count = {}
+
+        for genre in book['categories']:
+
+            genre_count[genre] = 1
+
+        db.Genres.insert(genre_count)
+
+    else:
+
+        genre_count = db.Genres.find_one()
+
+        for genre in book['categories']:
+
+            if genre in genre_count:
+
+                genre_count[genre] = genre_count[genre] + 1
+
+            else:
+
+                genre_count[genre] = 1
+
+        db.Genres.update({'_id':genre_count['_id']}, genre_count, True)
+
+
     return ''
 
 if __name__ == "__main__":
