@@ -19,7 +19,12 @@ def library():
 @app.route('/download/<id>/<format>')
 def download(id, format):
 
-    return send_from_directory(app.config['LIB_DIR'], id+'.'+format)
+    book = db.Books.find({'id':id})[0]
+
+    response = send_from_directory(app.config['LIB_DIR'], id+'.'+format)
+    response.headers.add('Content-Disposition', 'attachment; filename="' + book['title'] + '.' + format + '"')
+
+    return response
 
 @app.route('/genre/<genre>')
 def bygenre(genre):
