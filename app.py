@@ -82,7 +82,7 @@ def confirm(filename, id):
 
     else:
 
-        book['categories'] = ['None']
+        book['categories'] = ['Uncategorized']
 
     if 'averageRating' in r['volumeInfo']:
 
