@@ -11,6 +11,11 @@ app.config.from_object('config.Debug')
 client = MongoClient(app.config['MONGOHOST'], app.config['MONGOPORT'])
 db = client[app.config['MONGODB']]
 
+@app.route('/library')
+def library():
+
+    return render_template('library.html')
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
 
