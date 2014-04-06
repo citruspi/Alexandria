@@ -21,6 +21,28 @@ def download(id, format):
 
     return send_from_directory(app.config['LIB_DIR'], id+'.'+format)
 
+@app.route('/edit/<id>', methods=['GET', 'POST'])
+def edit(id):
+
+    book = db.Books.find({"id": id})[0]
+
+    if request.method == 'GET':
+
+        return render_template('edit.html', book=book)
+
+    elif request.method == 'POST':
+
+        book['title'] = request.form.get('title')
+        book['subtitle'] = request.form.get('subtitle')
+        book['authors'] = request.form.get('authors').split(',')
+        book['cover'] = request.form.get('cover')
+        book['description'] = request.form.get('description')
+        book['genres'] = request.form.getlist('genres')
+
+        db.Books.update({'_id':book['_id']}, book, True)
+
+        return ''
+
 @app.route('/book/<id>')
 def book(id):
 

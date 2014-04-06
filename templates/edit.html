@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row" style="height:5%"></div>
+
+<form name="edit">
+
+    <div class="row">
+
+        <div class="large-2 large-offset-10 columns">
+
+            <a href="#" class="button postfix" onclick="save();">SAVE</a>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Title
+                <input type="text" name="title" value="{{ book['title'] }}" />
+            </label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Subtitle
+                <input type="text" name="subtitle" value="{{ book['subtitle'] }}" />
+            </label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Author(s) (comma delimited)
+                <input type="text" name="authors" value="{% for author in book['authors'] %}{{ author }}, {% endfor %}" />
+            </label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Cover Image
+                <input type="text" name="cover" value="{{ book['cover'] }}" />
+            </label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Description
+                <textarea style="resize: none;" name="description" rows="10">{{ book['description'] }}</textarea>
+            </label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <label>Genres</label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-3 columns">
+            <input name="genres" type="checkbox" value="Art" {% if 'Art' in book['genres'] %}checked{% endif %}><label>Art</label><br>
+            <input name="genres" type="checkbox" value="Biography" {% if 'Biography' in book['genres'] %}checked{% endif %}><label>Biography</label><br>
+            <input name="genres" type="checkbox" value="Business" {% if 'Business' in book['genres'] %}checked{% endif %}><label>Business</label><br>
+            <input name="genres" type="checkbox" value="Chick Lit" {% if 'Chick Lit' in book['genres'] %}checked{% endif %}><label>Chick Lit</label><br>
+            <input name="genres" type="checkbox" value="Children's" {% if "Children's" in book['genres'] %}checked{% endif %}><label>Children's</label><br>
+            <input name="genres" type="checkbox" value="Classics" {% if 'Classics' in book['genres'] %}checked{% endif %}><label>Classics</label><br>
+            <input name="genres" type="checkbox" value="Comics" {% if 'Comics' in book['genres'] %}checked{% endif %}><label>Comics</label><br>
+            <input name="genres" type="checkbox" value="Computers" {% if 'Computers' in book['genres'] %}checked{% endif %}><label>Computers</label><br>
+            <input name="genres" type="checkbox" value="Contemporary" {% if 'Contemporary' in book['genres'] %}checked{% endif %}><label>Contemporary</label><br>
+            <input name="genres" type="checkbox" value="Cookbooks" {% if 'Cookbooks' in book['genres'] %}checked{% endif %}><label>Cookbooks</label><br>
+        </div>
+
+        <div class="large-3 columns">
+            <input name="genres" type="checkbox" value="Crime" {% if 'Crime' in book['genres'] %}checked{% endif %}><label>Crime</label><br>
+            <input name="genres" type="checkbox" value="Fantasy" {% if 'Fantasy' in book['genres'] %}checked{% endif %}><label>Fantasy</label><br>
+            <input name="genres" type="checkbox" value="Fiction" {% if 'Fiction' in book['genres'] %}checked{% endif %}><label>Fiction</label><br>
+            <input name="genres" type="checkbox" value="Gay and Lesbian" {% if 'Gay and Lesbian' in book['genres'] %}checked{% endif %}><label>Gay and Lesbian</label><br>
+            <input name="genres" type="checkbox" value="Graphic Novels" {% if 'Graphic Novels' in book['genres'] %}checked{% endif %}><label>Graphic Novels</label><br>
+            <input name="genres" type="checkbox" value="Historical Fiction" {% if 'Historical Fiction' in book['genres'] %}checked{% endif %}><label>Historical Fiction</label><br>
+            <input name="genres" type="checkbox" value="History" {% if 'History' in book['genres'] %}checked{% endif %}><label>History</label><br>
+            <input name="genres" type="checkbox" value="Horror" {% if 'Horror' in book['genres'] %}checked{% endif %}><label>Horror</label><br>
+            <input name="genres" type="checkbox" value="Humor and Comedy" {% if 'Humor and Comedy' in book['genres'] %}checked{% endif %}><label>Humor and Comedy</label><br>
+            <input name="genres" type="checkbox" value="Manga" {% if 'Manga' in book['genres'] %}checked{% endif %}><label>Manga</label><br>
+        </div>
+
+        <div class="large-3 columns">
+            <input name="genres" type="checkbox" value="Memoirs" {% if 'Memoirs' in book['genres'] %}checked{% endif %}><label>Memoirs</label><br>
+            <input name="genres" type="checkbox" value="Music" {% if 'Music' in book['genres'] %}checked{% endif %}><label>Music</label><br>
+            <input name="genres" type="checkbox" value="Mystery" {% if 'Mystery' in book['genres'] %}checked{% endif %}><label>Mystery</label><br>
+            <input name="genres" type="checkbox" value="Non Fiction" {% if 'Non Fiction' in book['genres'] %}checked{% endif %}><label>Non Fiction</label><br>
+            <input name="genres" type="checkbox" value="Other" {% if 'Other' in book['genres'] %}checked{% endif %}><label>Other</label><br>
+            <input name="genres" type="checkbox" value="Paranormal" {% if 'Paranormal' in book['genres'] %}checked{% endif %}><label>Paranormal</label><br>
+            <input name="genres" type="checkbox" value="Philosophy" {% if 'Philosophy' in book['genres'] %}checked{% endif %}><label>Philosophy</label><br>
+            <input name="genres" type="checkbox" value="Poetry" {% if 'Poetry' in book['genres'] %}checked{% endif %}><label>Poetry</label><br>
+            <input name="genres" type="checkbox" value="Psychology" {% if 'Psychology' in book['genres'] %}checked{% endif %}><label>Psychology</label><br>
+            <input name="genres" type="checkbox" value="Religion" {% if 'Religion' in book['genres'] %}checked{% endif %}><label>Religion</label><br>
+        </div>
+
+        <div class="large-3 columns">
+            <input name="genres" type="checkbox" value="Romance" {% if 'Romance' in book['genres'] %}checked{% endif %}><label>Romance</label><br>
+            <input name="genres" type="checkbox" value="Science" {% if 'Science' in book['genres'] %}checked{% endif %}><label>Science</label><br>
+            <input name="genres" type="checkbox" value="Science Fiction" {% if 'Science Fiction' in book['genres'] %}checked{% endif %}><label>Science Fiction</label><br>
+            <input name="genres" type="checkbox" value="Self Help" {% if 'Self Help' in book['genres'] %}checked{% endif %}><label>Self Help</label><br>
+            <input name="genres" type="checkbox" value="Suspense" {% if 'Suspense' in book['genres'] %}checked{% endif %}><label>Suspense</label><br>
+            <input name="genres" type="checkbox" value="Spirituality" {% if 'Spirituality' in book['genres'] %}checked{% endif %}><label>Spirituality</label><br>
+            <input name="genres" type="checkbox" value="Sports" {% if 'Sports' in book['genres'] %}checked{% endif %}><label>Sports</label><br>
+            <input name="genres" type="checkbox" value="Thriller" {% if 'Thriller' in book['genres'] %}checked{% endif %}><label>Thriller</label><br>
+            <input name="genres" type="checkbox" value="Travel" {% if 'Travel' in book['genres'] %}checked{% endif %}><label>Travel</label><br>
+            <input name="genres" type="checkbox" value="Young Adult" {% if 'Young Adult' in book['genres'] %}checked{% endif %}><label>Young Adult</label><br>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+
+        <div class="large-2 large-offset-10 columns">
+
+            <a href="#" class="button postfix" onclick="save();">SAVE</a>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% include 'scripts.html' %}
+
+<script type="text/javascript">
+
+    function save(){
+        $.post("/edit/{{ book['id'] }}", $( document.forms.edit ).serialize());
+    }
+
+</script>
+
+{% endblock %}
