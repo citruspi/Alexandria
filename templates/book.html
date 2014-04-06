@@ -12,38 +12,39 @@
             <img src="{{ book['cover']}}" width="100%"/>
         </a>
 
+        <br/><br/>
+
+        <dl>
+            <dt><i class="fa fa-download"></i> Downloads</dt>
+            <dd>
+                <ul class="button-group">
+                    {% for format in book['files'] %}
+                    <li><a href="/download/{{ book['id'] }}/{{ format }}" class="button small">{{ format }}</a></li>
+                    {% endfor %}
+                </ul>
+            </dd>
+        </dl>
+
     </div>
 
     <div class="large-9 columns">
 
-        <table width="100%">
-            <tbody>
-                <tr>
-                    <td width="20%"><strong>Title</strong></td>
-                    <td>{{ book['title'] }} </td>
-                </tr>
-                <tr>
-                    <td width="20%"><strong>Subtitle</strong></td>
-                    <td>{{ book['subtitle'] }} </td>
-                </tr>
-                <tr>
-                    <td width="20%"><strong>Author(s)</strong></td>
-                    <td>
-                        {% for author in book['authors'] %}
-                            {{ author }}
-                        {% endfor %}
-                    </td>
-                </tr>
-                <tr>
-                    <td width="20%"><strong>Downloads(s)</strong></td>
-                    <td>
-                        {% for format in book['files'] %}
-                            <a href="/download/{{ book['id'] }}/{{ format }}">{{ format }}</a>
-                        {% endfor %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <h3>{{ book['title'] }}</h3>
+
+        {% if book['subtitle'] %}
+        <h4><i>{{ book['subtitle'] }}</i></h4>
+        {% endif %}
+
+        <h5>By {% for author in book['authors'] %}
+            {{ author }}
+        {% endfor %}</h5>
+
+        <br>
+
+        <dl>
+            <dt>Description</dt>
+            <dd>{{ book['description']|safe }}</dd>
+        </dl>
 
     </div>
 
