@@ -126,19 +126,29 @@
                 opt.value = i['id'];
                 opt.innerHTML = (function () {
 
-                    var title = i.volumeInfo['title'] + ' - ';
+                    var title = i.volumeInfo['title'];
 
-                    if (i.volumeInfo['authors'].length < 2) {
-                        title += i.volumeInfo['authors'][0] + ' ';
+                    if (i.volumeInfo['authors'] != null) {
+
+                        title += ' - ';
+
+                        if (i.volumeInfo['authors'].length < 2) {
+                            title += i.volumeInfo['authors'][0] + ' ';
+                        }
+
+                        else {
+                            i.volumeInfo['authors'].forEach(function(author) {
+                                title += author + '; ';
+                            });
+                        }
+
                     }
 
-                    else {
-                        i.volumeInfo['authors'].forEach(function(author) {
-                            title += author + '; ';
-                        });
-                    }
+                    if (i.volumeInfo['publishedDate'] != null) {
 
-                    return title + '(' + i.volumeInfo['publishedDate'].substring(0,4) + ')';
+                        return title + '(' + i.volumeInfo['publishedDate'].substring(0,4) + ')';
+
+                    }
 
                 })();
 
@@ -179,13 +189,19 @@
                             }
                             else {
                                 return '';
-                            }                            
+                            }
                         }
                     });
                     $('#result').html(rendered);
                 }
             });
         }
+
+        $(document).on('closed', '[data-reveal]', function () {
+            window.results = null;
+            $("#select").empty();
+            $("#result").empty();
+        });
 
         function getResults() {
 
