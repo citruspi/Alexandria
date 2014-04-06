@@ -28,6 +28,13 @@ def bygenre(genre):
 
     return render_template('library.html', books=books)
 
+@app.route('/author/<author>')
+def byauthor(author):
+
+    books = db.Books.find({'authors':author})
+
+    return render_template('library.html', books=books)
+
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 def edit(id):
 

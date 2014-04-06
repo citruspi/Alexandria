@@ -44,7 +44,7 @@
         {% endif %}
 
         <h5>By {% for author in book['authors'] %}
-            {{ author }}
+            <a href="/author/{{ author }}">{{ author }}</a>
         {% endfor %}</h5>
 
         <br>
