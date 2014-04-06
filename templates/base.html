@@ -13,6 +13,7 @@
 
     <body>
 
+        {% if g.user %}
         <nav class="top-bar" data-topbar>
             <ul class="title-area">
                 <li class="name">
@@ -30,11 +31,12 @@
                     <li class="divider"></li>
                     <li><a href="/settings"> <i class="fa fa-cogs"></i> &nbsp;Settings</a></li>
                     <li class="divider"></li>
-                    <li><a href="/signout"> <i class="fa fa-power-off"></i> &nbsp;Sign Out</a></li>
+                    <li><a href="/logout"> <i class="fa fa-power-off"></i> &nbsp;Sign Out {{ g.user['name'].split(' ')[0] }}</a></li>
                     <li class="divider"></li>
                 </ul>
             </section>
         </nav>
+        {% endif %}
 
         {% block content %}{% endblock %}
 

@@ -1,15 +1,26 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for
+from flask import Flask, render_template, request, jsonify, g, send_from_directory, redirect, url_for, session, flash
 import os
 import shutil
 import requests
 from pymongo import MongoClient
 from functools import wraps
+from flask.ext.openid import OpenID
 
 app = Flask(__name__)
 app.config.from_object('config.Debug')
 
+oid = OpenID(app)
+
 client = MongoClient(app.config['MONGOHOST'], app.config['MONGOPORT'])
 db = client[app.config['MONGODB']]
+
+@app.before_request
+def before_request():
+
+    g.user = None
+
+    if 'openid' in session:
+        g.user = db.Users.find_one({'openid': session['openid']})
 
 def not_even_one(f):
     @wraps(f)
@@ -19,13 +30,71 @@ def not_even_one(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def authenticated(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if g.user is None:
+            return redirect(url_for('login'))
+        else:
+            if db.Users.find_one() is not None:
+                if db.Users.find_one({'email': g.user['email']}) is None:
+                    return redirect(url_for('logout'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route('/', methods=['GET'])
+def index():
+
+    if g.user is not None:
+        return redirect(url_for('library'))
+    else:
+        return render_template('login.html')
+
+
+@app.route('/login')
+@oid.loginhandler
+def login():
+
+    if g.user is not None:
+
+        return redirect(url_for('library'))
+
+    return oid.try_login('https://www.google.com/accounts/o8/id',
+                             ask_for=['email', 'fullname'])
+
+@app.route('/logout')
+def logout():
+
+    session.pop('openid', None)
+    return redirect(url_for('index'))
+
+@oid.after_login
+def create_or_login(resp):
+
+    session['openid'] = resp.identity_url
+    user = db.Users.find_one({'openid':resp.identity_url})
+    if user is not None:
+        flash(u'Successfully signed in')
+        g.user = user
+    else:
+        db.Users.insert({
+            'name': resp.fullname or resp.nickname,
+            'email': resp.email,
+            'openid': session['openid']
+        })
+
+    return redirect(oid.get_next_url())
+
 @app.route('/library')
+@authenticated
 @not_even_one
 def library():
 
     return render_template('library.html', books=db.Books.find())
 
 @app.route('/download/<id>/<format>')
+@authenticated
 def download(id, format):
 
     book = db.Books.find({'id':id})[0]
@@ -36,6 +105,7 @@ def download(id, format):
     return response
 
 @app.route('/genre/<genre>')
+@authenticated
 @not_even_one
 def bygenre(genre):
 
@@ -44,6 +114,7 @@ def bygenre(genre):
     return render_template('library.html', books=books)
 
 @app.route('/author/<author>')
+@authenticated
 @not_even_one
 def byauthor(author):
 
@@ -52,6 +123,7 @@ def byauthor(author):
     return render_template('library.html', books=books)
 
 @app.route('/edit/<id>', methods=['GET', 'POST'])
+@authenticated
 def edit(id):
 
     book = db.Books.find({"id": id})[0]
@@ -74,6 +146,7 @@ def edit(id):
         return ''
 
 @app.route('/book/<id>')
+@authenticated
 def book(id):
 
     books = db.Books.find({"id": id})
@@ -81,6 +154,7 @@ def book(id):
     return render_template('book.html', book=books[0])
 
 @app.route('/upload', methods=['GET', 'POST'])
+@authenticated
 def upload():
 
     if request.method == 'GET':
@@ -104,6 +178,7 @@ def upload():
             return jsonify(filename=filename)
 
 @app.route('/confirm/<filename>/<id>', methods=['POST'])
+@authenticated
 def confirm(filename, id):
 
     r = requests.get('https://www.googleapis.com/books/v1/volumes/'+id).json()
