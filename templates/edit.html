@@ -157,10 +157,17 @@
 
 {% include 'scripts.html' %}
 
+<script src="/static/js/jquery.growl.js"></script>
+
 <script type="text/javascript">
 
     function save(){
-        $.post("/edit/{{ book['id'] }}", $( document.forms.edit ).serialize());
+        $.post("/edit/{{ book['id'] }}", $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
+            $.growl.notice({
+                title: "Success!",
+                message: "Edit saved!"
+            });
+        });
     }
 
 </script>
