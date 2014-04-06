@@ -217,6 +217,7 @@
 
         function confirmResult() {
             $.post("/confirm/"+window.token+'/'+document.getElementById("select").options[document.getElementById("select").selectedIndex].value);
+            $('#myModal').foundation('reveal', 'close');
             return false;
         }
 
