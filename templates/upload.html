@@ -73,6 +73,7 @@
     <script src="/static/js/flexverticalcenter.js"></script>
     <script src="/static/js/dropzone.js"></script>
     <script src="/static/js/mustache.js"></script>
+    <script src="/static/js/jquery.growl.js"></script>
 
     <script id="template" type="x-tmpl-mustache">
         {% raw %}
@@ -216,8 +217,22 @@
         });
 
         function confirmResult() {
-            $.post("/confirm/"+window.token+'/'+document.getElementById("select").options[document.getElementById("select").selectedIndex].value);
+            var e = document.getElementById("select");
+            var value = e.options[e.selectedIndex].value;
+
+            $.post("/confirm/"+window.token+'/'+value);
+
+            window.results.forEach(function(i){
+                if (i['id'] == value){
+                    $.growl.notice({
+                        title: "Success!",
+                        message: i.volumeInfo['title'] + " uploaded!"
+                    });
+                }
+            });
+
             $('#myModal').foundation('reveal', 'close');
+
             return false;
         }
 
