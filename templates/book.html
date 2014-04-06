@@ -46,6 +46,11 @@
             <dd>{{ book['description']|safe }}</dd>
         </dl>
 
+        <dl>
+            <dt>Genres</dt>
+            <dd><ul>{% for genre in book['genres'] %} <li>{{ genre }}</li> {% endfor %}</ul></dd>
+        </dl>
+
     </div>
 
 </div>
