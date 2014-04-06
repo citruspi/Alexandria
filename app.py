@@ -203,7 +203,17 @@ def edit(id):
 
         book['title'] = request.form.get('title')
         book['subtitle'] = request.form.get('subtitle')
-        book['authors'] = request.form.get('authors').split(',')
+
+        authors = request.form.get('authors').split('\r\n')
+
+        book['authors'] = []
+
+        for author in authors:
+
+            if author != '':
+
+                book['authors'].append(author)
+
         book['cover'] = request.form.get('cover')
         book['description'] = request.form.get('description')
         book['genres'] = request.form.getlist('genres')
