@@ -2,7 +2,40 @@
 
 {% block content %}
 
-<div class="row" style="height:5%"></div>
+<div class="row" style="height:2%"></div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        {% if request.path.split('/')[-2] == 'genre' %}
+
+        <ul class="breadcrumbs">
+            <li><a href="/library">Library</a></li>
+            <li class="unavailable"><a href="#">Genres</a></li>
+            <li class="current"><a href="#">{{ request.path.split('/')[-1] }}</a></li>
+        </ul>
+
+        {% elif request.path.split('/')[-2] == 'author' %}
+
+        <ul class="breadcrumbs">
+            <li><a href="/library">Library</a></li>
+            <li class="unavailable"><a href="#">Authors</a></li>
+            <li class="current"><a href="#">{{ request.path.split('/')[-1] }}</a></li>
+        </ul>
+
+        {% elif request.path.split('/')[-1] == 'library' %}
+
+        <ul class="breadcrumbs">
+            <li><a href="/library">Library</a></li>
+            <li class="current"><a href="#">All</a></li>
+        </ul>
+
+        {% endif %}
+
+    </div>
+
+</div>
 
 <div class="row">
 

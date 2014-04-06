@@ -2,7 +2,21 @@
 
 {% block content %}
 
-<div class="row" style="height:5%"></div>
+<div class="row" style="height:2%"></div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <ul class="breadcrumbs">
+            <li><a href="/library">Library</a></li>
+            <li class="unavailable"><a href="#">Books</a></li>
+            <li class="current"><a href="#">{{ book['title'] }}</a></li>
+        </ul>
+
+    </div>
+
+</div>
 
 <div class="row">
 
