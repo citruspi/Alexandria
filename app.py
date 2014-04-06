@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for
 import os
 import shutil
 import requests
 from pymongo import MongoClient
-import pprint
+from functools import wraps
 
 app = Flask(__name__)
 app.config.from_object('config.Debug')
@@ -11,7 +11,16 @@ app.config.from_object('config.Debug')
 client = MongoClient(app.config['MONGOHOST'], app.config['MONGOPORT'])
 db = client[app.config['MONGODB']]
 
+def not_even_one(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if db.Books.find_one() is None:
+            return redirect(url_for('upload'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route('/library')
+@not_even_one
 def library():
 
     return render_template('library.html', books=db.Books.find())
@@ -27,6 +36,7 @@ def download(id, format):
     return response
 
 @app.route('/genre/<genre>')
+@not_even_one
 def bygenre(genre):
 
     books = db.Books.find({'genres':genre})
@@ -34,6 +44,7 @@ def bygenre(genre):
     return render_template('library.html', books=books)
 
 @app.route('/author/<author>')
+@not_even_one
 def byauthor(author):
 
     books = db.Books.find({'authors':author})
