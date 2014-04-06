@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row" style="height:5%"></div>
+
+<div class="row">
+
+    <div class="large-3 columns">
+
+        <a class="th">
+            <img src="{{ book['cover']}}" width="100%"/>
+        </a>
+
+    </div>
+
+    <div class="large-9 columns">
+
+        <table width="100%">
+            <tbody>
+                <tr>
+                    <td width="20%"><strong>Title</strong></td>
+                    <td>{{ book['title'] }} </td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong>Subtitle</strong></td>
+                    <td>{{ book['subtitle'] }} </td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong>Author(s)</strong></td>
+                    <td>
+                        {% for author in book['authors'] %}
+                            {{ author }}
+                        {% endfor %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

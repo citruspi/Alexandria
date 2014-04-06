@@ -16,6 +16,13 @@ def library():
 
     return render_template('library.html', books=db.Books.find())
 
+@app.route('/book/<id>')
+def book(id):
+
+    books = db.Books.find({"id": id})
+
+    return render_template('book.html', book=books[0])
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
 
