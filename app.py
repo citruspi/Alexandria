@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import os
+import shutil
 
 app = Flask(__name__)
 app.config.from_object('config.Debug')
@@ -19,16 +20,20 @@ def upload():
 
             filename = os.urandom(30).encode('hex') + '.' + file.filename.split('.')[-1]
 
-            while os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+            while os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
 
                 filename = os.urandom(30).encode('hex')
 
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join(app.config['TEMP_DIR'], filename))
 
             return jsonify(filename=filename)
 
 @app.route('/confirm/<filename>/<id>', methods=['POST'])
 def confirm(filename, id):
+
+    if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
+
+        shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], filename))
 
     return ''
 
