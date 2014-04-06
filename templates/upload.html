@@ -49,9 +49,84 @@
                         </div>
                     </div>
 
+                    <div class="row">
+
+                        <div class="large-12 columns">
+
+                            <dl class="accordion" data-accordion>
+
+                                <dd>
+
+                                    <a href="#panel1">Genres</a>
+
+                                    <div id="panel1" class="content">
+
+                                        <div class="row">
+
+                                            <div class="large-3 columns">
+                                                <input name="genres" type="checkbox" value="Art"><label>Art</label><br>
+                                                <input name="genres" type="checkbox" value="Biography"><label>Biography</label><br>
+                                                <input name="genres" type="checkbox" value="Business"><label>Business</label><br>
+                                                <input name="genres" type="checkbox" value="Chick Lit"><label>Chick Lit</label><br>
+                                                <input name="genres" type="checkbox" value="Children's"><label>Children's</label><br>
+                                                <input name="genres" type="checkbox" value="Classics"><label>Classics</label><br>
+                                                <input name="genres" type="checkbox" value="Comics"><label>Comics</label><br>
+                                                <input name="genres" type="checkbox" value="Computers"><label>Computers</label><br>
+                                                <input name="genres" type="checkbox" value="Contemporary"><label>Contemporary</label><br>
+                                                <input name="genres" type="checkbox" value="Cookbooks"><label>Cookbooks</label><br>
+                                            </div>
+
+                                            <div class="large-3 columns">
+                                                <input name="genres" type="checkbox" value="Crime"><label>Crime</label><br>
+                                                <input name="genres" type="checkbox" value="Fantasy"><label>Fantasy</label><br>
+                                                <input name="genres" type="checkbox" value="Fiction"><label>Fiction</label><br>
+                                                <input name="genres" type="checkbox" value="Gay and Lesbian"><label>Gay and Lesbian</label><br>
+                                                <input name="genres" type="checkbox" value="Graphic Novels"><label>Graphic Novels</label><br>
+                                                <input name="genres" type="checkbox" value="Historical Fiction"><label>Historical Fiction</label><br>
+                                                <input name="genres" type="checkbox" value="History"><label>History</label><br>
+                                                <input name="genres" type="checkbox" value="Horror"><label>Horror</label><br>
+                                                <input name="genres" type="checkbox" value="Humor and Comedy"><label>Humor and Comedy</label><br>
+                                                <input name="genres" type="checkbox" value="Mango"><label>Manga</label><br>
+                                            </div>
+
+                                            <div class="large-3 columns">
+                                                <input name="genres" type="checkbox" value="Memoirs"><label>Memoirs</label><br>
+                                                <input name="genres" type="checkbox" value="Music"><label>Music</label><br>
+                                                <input name="genres" type="checkbox" value="Mystery"><label>Mystery</label><br>
+                                                <input name="genres" type="checkbox" value="Non Fiction"><label>Non Fiction</label><br>
+                                                <input name="genres" type="checkbox" value="Other"><label>Other</label><br>
+                                                <input name="genres" type="checkbox" value="Paranormal"><label>Paranormal</label><br>
+                                                <input name="genres" type="checkbox" value="Philosophy"><label>Philosophy</label><br>
+                                                <input name="genres" type="checkbox" value="Poetry"><label>Poetry</label><br>
+                                                <input name="genres" type="checkbox" value="Psychology"><label>Psychology</label><br>
+                                                <input name="genres" type="checkbox" value="Religion"><label>Religion</label><br>
+                                            </div>
+
+                                            <div class="large-3 columns">
+                                                <input name="genres" type="checkbox" value="Romance"><label>Romance</label><br>
+                                                <input name="genres" type="checkbox" value="Science"><label>Science</label><br>
+                                                <input name="genres" type="checkbox" value="Science Fiction"><label>Science Fiction</label><br>
+                                                <input name="genres" type="checkbox" value="Self Help"><label>Self Help</label><br>
+                                                <input name="genres" type="checkbox" value="Suspense"><label>Suspense</label><br>
+                                                <input name="genres" type="checkbox" value="Spirituality"><label>Spirituality</label><br>
+                                                <input name="genres" type="checkbox" value="Sports"><label>Sports</label><br>
+                                                <input name="genres" type="checkbox" value="Thriller"><label>Thriller</label><br>
+                                                <input name="genres" type="checkbox" value="Travel"><label>Travel</label><br>
+                                                <input name="genres" type="checkbox" value="Young Adult"><label>Young Adult</label><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <br>
+
                     <div class="row" id="result">
                         <!-- -->
                     </div>
+
                 </form>
                 </div>
 
@@ -213,7 +288,7 @@
             var e = document.getElementById("select");
             var value = e.options[e.selectedIndex].value;
 
-            $.post("/confirm/"+window.token+'/'+value);
+            $.post("/confirm/"+window.token+'/'+value, $( document.forms.confirm ).serialize());
 
             window.results.forEach(function(i){
                 if (i['id'] == value){

@@ -88,14 +88,6 @@ def confirm(filename, id):
 
         book['description'] = r['volumeInfo']['description']
 
-    if 'categories' in r['volumeInfo']:
-
-        book['categories'] = r['volumeInfo']['categories']
-
-    else:
-
-        book['categories'] = ['Uncategorized']
-
     if 'averageRating' in r['volumeInfo']:
 
         book['averageRating'] = r['volumeInfo']['averageRating']
@@ -159,13 +151,25 @@ def confirm(filename, id):
 
     book['files'].append(filename.split('.')[-1])
 
+    book['genres'] = []
+
+    if len(request.form.getlist('genres')) == 0:
+
+        book['genres'].append('Uncategorized')
+
+    else:
+
+        for genre in request.form.getlist('genres'):
+
+            book['genres'].append(genre)
+
     db.Books.insert(book)
 
     if not db.Genres.find_one():
 
         genre_count = {}
 
-        for genre in book['categories']:
+        for genre in book['genres']:
 
             genre_count[genre] = 1
 
@@ -175,7 +179,7 @@ def confirm(filename, id):
 
         genre_count = db.Genres.find_one()
 
-        for genre in book['categories']:
+        for genre in book['genres']:
 
             if genre in genre_count:
 
