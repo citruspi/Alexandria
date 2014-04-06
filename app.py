@@ -17,7 +17,7 @@ def upload():
 
         if file:
 
-            filename = os.urandom(30).encode('hex')
+            filename = os.urandom(30).encode('hex') + '.' + file.filename.split('.')[-1]
 
             while os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
 
