@@ -85,6 +85,10 @@ def logout():
 @oid.after_login
 def create_or_login(resp):
 
+    if resp.email not in db.Settings.find_one()['authorized']:
+
+        return redirect(url_for('logout'))
+
     session['openid'] = resp.identity_url
     user = db.Users.find_one({'openid':resp.identity_url})
     if user is not None:
