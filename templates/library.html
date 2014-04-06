@@ -11,7 +11,7 @@
         <ul class="small-block-grid-5">
             {% for book in books %}
             <li>
-                <a class="th">
+                <a class="th" href="/book/{{ book['id'] }}">
                     <img src="{{ book['cover']}}" width="100%"/>
                 </a>
             </li>
