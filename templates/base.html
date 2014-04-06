@@ -24,7 +24,7 @@
             <section class="top-bar-section">
                 <ul class="right">
                     <li class="divider"></li>
-                    <li><a href="/library"> <i class="fa fa-book"></i> &nbsp;Library</a></li>
+                    <li id="library_menu"><a href="/library"> <i class="fa fa-book"></i> &nbsp;Library</a></li>
                     <li class="divider"></li>
                     <li id="upload_menu"><a href="/upload"> <i class="fa fa-upload"></i> &nbsp;Upload</a></li>
                     <li class="divider"></li>
@@ -44,6 +44,11 @@
                 case 'upload':
 
                     document.getElementById("upload_menu").className = "active";
+                    break;
+
+                case 'library':
+
+                    document.getElementById("library_menu").className = "active";
                     break;
 
                 default:
