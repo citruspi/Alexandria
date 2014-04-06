@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import shutil
 import requests
@@ -15,6 +15,11 @@ db = client[app.config['MONGODB']]
 def library():
 
     return render_template('library.html', books=db.Books.find())
+
+@app.route('/download/<id>/<format>')
+def download(id, format):
+
+    return send_from_directory(app.config['LIB_DIR'], id+'.'+format)
 
 @app.route('/book/<id>')
 def book(id):
@@ -150,9 +155,9 @@ def confirm(filename, id):
             book['cover'] = ''
 
 
-    book['files'] = {
-        filename.split('.')[-1]: True
-    }
+    book['files'] = []
+
+    book['files'].append(filename.split('.')[-1])
 
     db.Books.insert(book)
 

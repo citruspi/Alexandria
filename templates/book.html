@@ -34,6 +34,14 @@
                         {% endfor %}
                     </td>
                 </tr>
+                <tr>
+                    <td width="20%"><strong>Downloads(s)</strong></td>
+                    <td>
+                        {% for format in book['files'] %}
+                            <a href="/download/{{ book['id'] }}/{{ format }}">{{ format }}</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             </tbody>
         </table>
 
