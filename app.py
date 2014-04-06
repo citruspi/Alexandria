@@ -246,115 +246,129 @@ def upload():
 @is_administrator
 def confirm(filename, id):
 
-    r = requests.get('https://www.googleapis.com/books/v1/volumes/'+id).json()
+    query = db.Books.find_one({'id': id})
 
-    if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
+    if query is None:
 
-        shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], r['id']+'.'+filename.split('.')[-1]))
+        r = requests.get('https://www.googleapis.com/books/v1/volumes/'+id).json()
 
-    book = {}
+        if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
 
-    book['id'] = r['id']
+            shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], r['id']+'.'+filename.split('.')[-1]))
 
-    if 'title' in r['volumeInfo']:
+        book = {}
 
-        book['title'] = r['volumeInfo']['title']
+        book['id'] = r['id']
 
-    if 'subtitle' in r['volumeInfo']:
+        if 'title' in r['volumeInfo']:
 
-        book['subtitle'] = r['volumeInfo']['subtitle']
+            book['title'] = r['volumeInfo']['title']
 
-    if 'authors' in r['volumeInfo']:
+        if 'subtitle' in r['volumeInfo']:
 
-        book['authors'] = r['volumeInfo']['authors']
+            book['subtitle'] = r['volumeInfo']['subtitle']
 
-    if 'publisher' in r['volumeInfo']:
+        if 'authors' in r['volumeInfo']:
 
-        book['publisher'] = r['volumeInfo']['publisher']
+            book['authors'] = r['volumeInfo']['authors']
 
-    if 'publishedDate' in r['volumeInfo']:
+        if 'publisher' in r['volumeInfo']:
 
-        book['publishedDate'] = r['volumeInfo']['publishedDate']
+            book['publisher'] = r['volumeInfo']['publisher']
 
-    if 'description' in r['volumeInfo']:
+        if 'publishedDate' in r['volumeInfo']:
 
-        book['description'] = r['volumeInfo']['description']
+            book['publishedDate'] = r['volumeInfo']['publishedDate']
 
-    if 'averageRating' in r['volumeInfo']:
+        if 'description' in r['volumeInfo']:
 
-        book['averageRating'] = r['volumeInfo']['averageRating']
+            book['description'] = r['volumeInfo']['description']
 
-    if 'ratingsCount' in r['volumeInfo']:
+        if 'averageRating' in r['volumeInfo']:
 
-        book['ratingsCount'] = r['volumeInfo']['ratingsCount']
+            book['averageRating'] = r['volumeInfo']['averageRating']
 
-    if 'language' in r['volumeInfo']:
+        if 'ratingsCount' in r['volumeInfo']:
 
-        book['language'] = r['volumeInfo']['language']
+            book['ratingsCount'] = r['volumeInfo']['ratingsCount']
 
-    book['identifiers'] = []
+        if 'language' in r['volumeInfo']:
 
-    if 'industryIdentifiers' in r['volumeInfo']:
+            book['language'] = r['volumeInfo']['language']
 
-        for identifier in r['volumeInfo']['industryIdentifiers']:
+        book['identifiers'] = []
 
-            book['identifiers'].append({
-                'type': identifier['type'],
-                'identifier': identifier['identifier']
-            })
+        if 'industryIdentifiers' in r['volumeInfo']:
 
-    book['identifiers'].append({
-        'type': 'GOOGLE',
-        'identifier': r['id']
-    })
+            for identifier in r['volumeInfo']['industryIdentifiers']:
 
-    if 'imageLinks' in r['volumeInfo']:
+                book['identifiers'].append({
+                    'type': identifier['type'],
+                    'identifier': identifier['identifier']
+                })
 
-        if 'extraLarge' in r['volumeInfo']['imageLinks']:
+        book['identifiers'].append({
+            'type': 'GOOGLE',
+            'identifier': r['id']
+        })
 
-            book['cover'] = r['volumeInfo']['imageLinks']['extraLarge']
+        if 'imageLinks' in r['volumeInfo']:
 
-        elif 'large' in r['volumeInfo']['imageLinks']:
+            if 'extraLarge' in r['volumeInfo']['imageLinks']:
 
-            book['cover'] = r['volumeInfo']['imageLinks']['large']
+                book['cover'] = r['volumeInfo']['imageLinks']['extraLarge']
 
-        elif 'medium' in r['volumeInfo']['imageLinks']:
+            elif 'large' in r['volumeInfo']['imageLinks']:
 
-            book['cover'] = r['volumeInfo']['imageLinks']['medium']
+                book['cover'] = r['volumeInfo']['imageLinks']['large']
 
-        elif 'small' in r['volumeInfo']['imageLinks']:
+            elif 'medium' in r['volumeInfo']['imageLinks']:
 
-            book['cover'] = r['volumeInfo']['imageLinks']['small']
+                book['cover'] = r['volumeInfo']['imageLinks']['medium']
 
-        elif 'thumbnail' in r['volumeInfo']['imageLinks']:
+            elif 'small' in r['volumeInfo']['imageLinks']:
 
-            book['cover'] = r['volumeInfo']['imageLinks']['thumbnail']
+                book['cover'] = r['volumeInfo']['imageLinks']['small']
 
-        elif 'thumbnail' in r['volumeInfo']['imageLinks']:
+            elif 'thumbnail' in r['volumeInfo']['imageLinks']:
 
-            book['cover'] = r['volumeInfo']['imageLinks']['smallThumbnail']
+                book['cover'] = r['volumeInfo']['imageLinks']['thumbnail']
+
+            elif 'thumbnail' in r['volumeInfo']['imageLinks']:
+
+                book['cover'] = r['volumeInfo']['imageLinks']['smallThumbnail']
+
+            else:
+
+                book['cover'] = ''
+
+        book['files'] = []
+
+        book['files'].append(filename.split('.')[-1])
+
+        book['genres'] = []
+
+        if len(request.form.getlist('genres')) == 0:
+
+            book['genres'].append('Uncategorized')
 
         else:
 
-            book['cover'] = ''
+            for genre in request.form.getlist('genres'):
 
-    book['files'] = []
+                book['genres'].append(genre)
 
-    book['files'].append(filename.split('.')[-1])
-
-    book['genres'] = []
-
-    if len(request.form.getlist('genres')) == 0:
-
-        book['genres'].append('Uncategorized')
+        db.Books.insert(book)
 
     else:
 
-        for genre in request.form.getlist('genres'):
+        query['files'].append(filename.split('.')[-1])
 
-            book['genres'].append(genre)
+        if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
 
-    db.Books.insert(book)
+            shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], query['id']+'.'+filename.split('.')[-1]))
+
+        db.Books.update({'_id':query['_id']}, query, True)
 
     return ''
 
