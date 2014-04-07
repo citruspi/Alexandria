@@ -152,12 +152,22 @@ def settings():
 
         return ''
 
-@app.route('/library')
+@app.route('/library', defaults={'page': 1})
+@app.route('/library/<int:page>')
 @authenticated
 @not_even_one
-def library():
+def library(page):
 
-    return render_template('library.html', books=db.Books.find())
+    perpage = 10
+
+    books = db.Books.find().skip((page-1)*perpage).limit(perpage)
+    cap = db.Books.count() / perpage
+
+    if db.Books.count() % perpage > 0:
+
+        cap += 1
+
+    return render_template('library.html', books=books, page=page, cap=cap)
 
 @app.route('/download/<id>/<format>')
 @authenticated

@@ -24,7 +24,7 @@
             <li class="current"><a href="#">{{ request.path.split('/')[-1] }}</a></li>
         </ul>
 
-        {% elif request.path.split('/')[-1] == 'library' %}
+        {% elif request.path.split('/')[-1] == 'library' or request.path.split('/')[-2] == 'library'  %}
 
         <ul class="breadcrumbs">
             <li><a href="/library">Library</a></li>
@@ -50,6 +50,30 @@
             </li>
             {% endfor %}
         </ul>
+
+    </div>
+
+</div>
+
+<div class="row" style="height:4%"></div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <div class="pagination-centered">
+        <ul class="pagination">
+            <li class="arrow unavailable"><a href="">&laquo;</a></li>
+            {% for n in range(cap) %}
+            {% if n+1 == page %}
+            <li class="current"><a href="/library/{{n+1}}">{{ n+1 }}</a></li>
+            {% else %}
+            <li><a href="/library/{{n+1}}">{{ n+1 }}</a></li>
+            {% endif %}
+            {% endfor %}
+            <li class="arrow"><a href="">&raquo;</a></li>
+        </ul>
+        </div>
 
     </div>
 
