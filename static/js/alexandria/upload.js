@@ -10,11 +10,11 @@ $(document.body).dropzone({
             document.getElementById('query').value = file.name.split('.')[0];
             getResults();
             $('#myModal').foundation('reveal', 'open');
-            window.token = response['filename'];
+            window.token = response.filename;
         }
         else {
-            noConfirm(response['filename'], file.name.split('.')[0]);
-        }    
+            noConfirm(response.filename, file.name.split('.')[0]);
+        }
     }
 });
 
@@ -26,20 +26,20 @@ $('#select').bind('change',function(){
 
 function noConfirm (token, query) {
 
-    if (query != null && query != '') {
+    if (query !== null && query !== '') {
 
         $.getJSON( "https://www.googleapis.com/books/v1/volumes?q="+query, function( data ) {
 
-            $.post("/confirm/"+token+'/'+data['items'][0]['id'], function (response){
+            $.post("/confirm/"+token+'/'+data.items[0].id, function (response){
                 $.growl.notice({
                     title: 'Success!',
-                    message: data['items'][0].volumeInfo['title'] + ' was uploaded!'
+                    message: data.items[0].volumeInfo.title + ' was uploaded!'
                 });
             })
             .fail(function(data) {
                 $.growl.error({
                     title: 'Error!',
-                    message: data.responseJSON['error']
+                    message: data.responseJSON.error
                 });
             });
 
@@ -53,30 +53,30 @@ function listResults () {
     window.results.forEach(function(i) {
 
         var opt = document.createElement('option');
-        opt.value = i['id'];
+        opt.value = i.id;
         opt.innerHTML = (function () {
 
-            var title = i.volumeInfo['title'];
+            var title = i.volumeInfo.title;
 
-            if (i.volumeInfo['authors'] != null) {
+            if (i.volumeInfo.authors !== null) {
 
                 title += ' - ';
 
-                if (i.volumeInfo['authors'].length < 2) {
-                    title += i.volumeInfo['authors'][0] + ' ';
+                if (i.volumeInfo.authors.length < 2) {
+                    title += i.volumeInfo.authors[0] + ' ';
                 }
 
                 else {
-                    i.volumeInfo['authors'].forEach(function(author) {
+                    i.volumeInfo.authors.forEach(function(author) {
                         title += author + '; ';
                     });
                 }
 
             }
 
-            if (i.volumeInfo['publishedDate'] != null) {
+            if (i.volumeInfo.publishedDate !== null) {
 
-                return title + '(' + i.volumeInfo['publishedDate'].substring(0,4) + ')';
+                return title + '(' + i.volumeInfo.publishedDate.substring(0,4) + ')';
 
             }
 
@@ -89,33 +89,33 @@ function listResults () {
 
 function displayResult (id) {
     window.results.forEach(function(i){
-        if (i['id'] == id){
+        if (i.id == id){
             var template = $('#template').html();
             Mustache.parse(template);   // optional, speeds up future uses
             var rendered = Mustache.render(template, {
-                title: i.volumeInfo['title'],
-                subtitle: i.volumeInfo['subtitle'],
-                authors: i.volumeInfo['authors'],
-                description: i.volumeInfo['description'],
+                title: i.volumeInfo.title,
+                subtitle: i.volumeInfo.subtitle,
+                authors: i.volumeInfo.authors,
+                description: i.volumeInfo.description,
                 "cover": function () {
-                    var covers = i.volumeInfo['imageLinks'];
-                    if (covers['extraLarge'] != null && covers['extraLarge'] != '') {
-                        return covers['extraLarge'];
+                    var covers = i.volumeInfo.imageLinks;
+                    if (covers.extraLarge !== null && covers.extraLarge !== '') {
+                        return covers.extraLarge;
                     }
-                    else if (covers['large'] != null && covers['large'] != '') {
-                        return covers['large'];
+                    else if (covers.large !== null && covers.large !== '') {
+                        return covers.large;
                     }
-                    else if (covers['medium'] != null && covers['medium'] != '') {
-                        return covers['medium'];
+                    else if (covers.medium !== null && covers.medium !== '') {
+                        return covers.medium;
                     }
-                    else if (covers['small'] != null && covers['small'] != '') {
-                        return covers['small'];
+                    else if (covers.small !== null && covers.small !== '') {
+                        return covers.small;
                     }
-                    else if (covers['thumbnail'] != null && covers['thumbnail'] != '') {
-                        return covers['thumbnail'];
+                    else if (covers.thumbnail !== null && covers.thumbnail !== '') {
+                        return covers.thumbnail;
                     }
-                    else if (covers['smallThumbnail'] != null && covers['smallThumbnail'] != '') {
-                        return covers['smallThumbnail'];
+                    else if (covers.smallThumbnail !== null && covers.smallThumbnail !== '') {
+                        return covers.smallThumbnail;
                     }
                     else {
                         return '';
@@ -140,10 +140,10 @@ function confirmResult() {
     $.post("/confirm/"+window.token+'/'+value, $( document.forms.confirm ).serialize());
 
     window.results.forEach(function(i){
-        if (i['id'] == value){
+        if (i.id == value){
             $.growl.notice({
                 title: "Success!",
-                message: i.volumeInfo['title'] + " was uploaded!"
+                message: i.volumeInfo.title + " was uploaded!"
             });
         }
     });
@@ -157,16 +157,16 @@ function getResults() {
 
     query = document.getElementById('query').value;
 
-    if (query != null && query != '') {
+    if (query !== null && query !== '') {
 
         $("#select").empty();
 
         $.getJSON( "https://www.googleapis.com/books/v1/volumes?q="+query, function( data ) {
 
-            window.results = data['items'];
+            window.results = data.items;
 
             listResults();
-            displayResult(data['items'][0]['id']);
+            displayResult(data.items[0].id);
 
 
         });
