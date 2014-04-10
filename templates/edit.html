@@ -153,24 +153,10 @@
 {% include 'scripts.html' %}
 
 <script src="/static/js/jquery.growl.js"></script>
+<script src="/static/js/alexandria/edit.js"></script>
 
 <script type="text/javascript">
-
-    function save(){
-        $.post("/edit/{{ book['id'] }}", $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
-            $.growl.notice({
-                title: "Success!",
-                message: "Edit saved!"
-            });
-        })
-        .fail(function(data){
-            $.growl.error({
-                title: 'Error!',
-                message: 'The edit failed to save!'
-            });
-        });
-    }
-
+    window.id = "{{ book['id'] }}";
 </script>
 
 {% endblock %}
