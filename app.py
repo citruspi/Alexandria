@@ -398,13 +398,19 @@ def confirm(filename, id):
 
     else:
 
-        query['files'].append(filename.split('.')[-1])
+        if filename.split('.')[-1] in query['files']:
 
-        if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
+            return jsonify(error='The format \'' + filename.split('.')[-1] + '\' already exists.'), 409
 
-            shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], query['id']+'.'+filename.split('.')[-1]))
+        else:
 
-        db.Books.update({'_id':query['_id']}, query, True)
+            query['files'].append(filename.split('.')[-1])
+
+            if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
+
+                shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], query['id']+'.'+filename.split('.')[-1]))
+
+            db.Books.update({'_id':query['_id']}, query, True)
 
     return ''
 

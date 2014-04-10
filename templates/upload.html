@@ -210,13 +210,18 @@
 
                 $.getJSON( "https://www.googleapis.com/books/v1/volumes?q="+query, function( data ) {
 
-                    $.post("/confirm/"+token+'/'+data['items'][0]['id']);
-
-                    $.growl.notice({
-                        title: "Success!",
-                        message: data['items'][0].volumeInfo['title'] + " was uploaded!"
+                    $.post("/confirm/"+token+'/'+data['items'][0]['id'], function (response){
+                        $.growl.notice({
+                            title: 'Success!',
+                            message: data['items'][0].volumeInfo['title'] + ' was uploaded!'
+                        });
+                    })
+                    .fail(function(data) {
+                        $.growl.error({
+                            title: 'Error!',
+                            message: data.responseJSON['error']
+                        });
                     });
-
 
                 });
 
