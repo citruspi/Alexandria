@@ -20,9 +20,8 @@
 
         <div class="large-12 columns">
 
-            <label>Title
-                <input type="text" name="title" value="{{ book['title'] }}" />
-            </label>
+            <h5>Title</h5>
+            <input type="text" name="title" value="{{ book['title'] }}" />
 
         </div>
 
@@ -32,9 +31,8 @@
 
         <div class="large-12 columns">
 
-            <label>Subtitle
-                <input type="text" name="subtitle" value="{{ book['subtitle'] }}" />
-            </label>
+            <h5>Subtitle</h5>
+            <input type="text" name="subtitle" value="{{ book['subtitle'] }}" />
 
         </div>
 
@@ -44,9 +42,8 @@
 
         <div class="large-12 columns">
 
-            <label>Author(s) (One Per Line)
-                <textarea style="resize: none;" name="authors" rows="5">{% for author in book['authors'] %}{{ author + '\n' }}{% endfor %}</textarea>
-            </label>            
+            <h5>Author(s) (One Per Line)</h5>
+            <textarea style="resize: none;" name="authors" rows="5">{% for author in book['authors'] %}{{ author + '\n' }}{% endfor %}</textarea>
 
         </div>
 
@@ -56,9 +53,8 @@
 
         <div class="large-12 columns">
 
-            <label>Cover Image
-                <input type="text" name="cover" value="{{ book['cover'] }}" />
-            </label>
+            <h5>Cover Image</h5>
+            <input type="text" name="cover" value="{{ book['cover'] }}" />
 
         </div>
 
@@ -68,9 +64,8 @@
 
         <div class="large-12 columns">
 
-            <label>Description
-                <textarea style="resize: none;" name="description" rows="10">{{ book['description'] }}</textarea>
-            </label>
+            <h5>Description</h5>
+            <textarea style="resize: none;" name="description" rows="10">{{ book['description'] }}</textarea>
 
         </div>
 
@@ -80,7 +75,7 @@
 
         <div class="large-12 columns">
 
-            <label>Genres</label>
+            <h5>Genres</h5>
 
         </div>
 
