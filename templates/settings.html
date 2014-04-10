@@ -20,6 +20,29 @@
 
         <div class="large-12 columns">
 
+            <label>Confirmation</label>
+            <input name="confirm" value="true" type="checkbox" {% if setting['confirm'] %}checked{% endif %}><label for="checkbox1">Manually confirm eBook metadata when uploading</label>
+
+            <label><sup>&#10033;</sup> Enabling this will limit you to dragging and dropping one eBook at a time.</label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
+            <hr>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="large-12 columns">
+
             <label>Authorized Users (One Per Line)
                 <textarea style="resize: none;" name="authorized" rows="10">{% for authorized in setting['authorized'] %}{{ authorized + '\n' }}{% endfor %}</textarea>
             </label>

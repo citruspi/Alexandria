@@ -187,10 +187,14 @@
             clickable: true,
             previewsContainer: ".previewsContainer",
             success: function(file, response) {
+                {% if setting['confirm'] %}
                 document.getElementById('query').value = file.name.split('.')[0];
                 getResults();
                 $('#myModal').foundation('reveal', 'open');
                 window.token = response['filename'];
+                {% else %}
+                noConfirm(response['filename'], file.name.split('.')[0]);
+                {% endif %}
             }
         });
 
@@ -199,6 +203,26 @@
             var value = e.options[e.selectedIndex].value;
             displayResult(value);
         });
+
+        function noConfirm (token, query) {
+
+            if (query != null && query != '') {
+
+                $.getJSON( "https://www.googleapis.com/books/v1/volumes?q="+query, function( data ) {
+
+                    $.post("/confirm/"+token+'/'+data['items'][0]['id']);
+
+                    $.growl.notice({
+                        title: "Success!",
+                        message: data['items'][0].volumeInfo['title'] + " was uploaded!"
+                    });
+
+
+                });
+
+            }
+
+        }
 
         function listResults () {
             window.results.forEach(function(i) {

@@ -85,7 +85,7 @@ def logout():
 @oid.after_login
 def create_or_login(resp):
 
-    
+
     if db.Settings.find_one():
 
         if resp.email not in db.Settings.find_one()['authorized']:
@@ -108,7 +108,8 @@ def create_or_login(resp):
             })
 
             db.Settings.insert({
-                'authorized': [resp.email]
+                'authorized': [resp.email],
+                'confirm': False
             })
 
         else:
@@ -150,6 +151,14 @@ def settings():
             if auth != '':
 
                 setting['authorized'].append(auth)
+
+        if len(request.form.getlist('confirm')) > 0:
+
+            setting['confirm'] = True
+
+        else:
+
+            setting['confirm'] = False
 
         db.Settings.update({'_id':setting['_id']}, setting, True)
 
@@ -250,7 +259,7 @@ def upload():
 
     if request.method == 'GET':
 
-        return render_template('upload.html')
+        return render_template('upload.html', setting=db.Settings.find_one())
 
     elif request.method == 'POST':
 
