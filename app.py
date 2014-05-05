@@ -192,14 +192,22 @@ def download(id, format):
 
     return response
 
-@app.route('/genre/<genre>')
+@app.route('/genre/<genre>', defaults={'page': 1})
+@app.route('/genre/<genre>/<int:page>')
 @authenticated
 @not_even_one
-def bygenre(genre):
+def bygenre(genre, page):
 
-    books = db.Books.find({'genres':genre})
+    perpage = 10
 
-    return render_template('library.html', books=books)
+    books = db.Books.find({'genres':genre}).skip((page-1)*perpage).limit(perpage)
+    cap = db.Books.find({'genres':genre}).count() / perpage
+
+    if db.Books.count() % perpage > 0:
+
+        cap += 1
+
+    return render_template('library.html', books=books, page=page, cap=cap)
 
 @app.route('/author/<author>')
 @authenticated
