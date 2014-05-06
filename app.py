@@ -209,14 +209,22 @@ def bygenre(genre, page):
 
     return render_template('library.html', books=books, page=page, cap=cap)
 
-@app.route('/author/<author>')
+@app.route('/author/<author>', defaults={'page': 1})
+@app.route('/author/<author>/<int:page>')
 @authenticated
 @not_even_one
-def byauthor(author):
+def byauthor(author, page):
 
-    books = db.Books.find({'authors':author})
+    perpage = 10
 
-    return render_template('library.html', books=books)
+    books = db.Books.find({'authors':author}).skip((page-1)*perpage).limit(perpage)
+    cap = db.Books.find({'authors':author}).count() / perpage
+
+    if db.Books.count() % perpage > 0:
+
+        cap += 1
+
+    return render_template('library.html', books=books, page=page, cap=cap)
 
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 @authenticated
