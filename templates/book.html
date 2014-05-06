@@ -39,13 +39,7 @@
             </dd>
         </dl>
 
-        <dl>
-            <dt>More</dt>
-            <dd>
-                <h4><small>ID: {{ book['id'] }}</small></h4>
-                {% if g.user['role'] == 'Administrator' %}<a href="/edit/{{ book['id'] }}">Edit</a>{% endif %}
-            </dd>
-        </dl>
+        {% if g.user['role'] == 'Administrator' %}<a href="/edit/{{ book['id'] }}">Edit</a>{% endif %}
 
     </div>
 
