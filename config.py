@@ -1,9 +1,7 @@
-import os
-
 class Config(object):
 
     DEBUG = False
-    SECRET_KEY = os.urandom(30).encode('hex')
+    SECRET_KEY = 'CHANGEME'
     TEMP_DIR = 'tmp'
     LIB_DIR = 'books'
 
