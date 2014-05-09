@@ -23,4 +23,34 @@ class BooksView(FlaskView):
 
         return jsonify(books=books)
 
+    @authenticated
+    def genre(self, id):
+
+        query = mongo.Books.find({'genres':id})
+
+        books = json.loads(json_util.dumps(query, default=json_util.default))
+
+        for book in books:
+
+            book['id'] = book['_id']['$oid']
+            book.pop('_id')
+
+        return jsonify(books=books)
+
+
+    @authenticated
+    def author(self, id):
+
+        query = mongo.Books.find({'authors':id})
+
+        books = json.loads(json_util.dumps(query, default=json_util.default))
+
+        for book in books:
+
+            book['id'] = book['_id']['$oid']
+            book.pop('_id')
+
+        return jsonify(books=books)
+
+
 BooksView.register(app)
