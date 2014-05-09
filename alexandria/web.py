@@ -1,4 +1,4 @@
-from alexandria import app
+from alexandria import app, mongo
 from flask import render_template, request, jsonify, g, send_from_directory, redirect, url_for, session, flash
 import os
 import shutil
@@ -7,13 +7,10 @@ from pymongo import MongoClient
 from functools import wraps
 import bcrypt
 
-client = MongoClient(app.config['MONGOHOST'], app.config['MONGOPORT'])
-db = client[app.config['MONGODB']]
-
 def not_even_one(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if db.Books.find_one() is None:
+        if mongo.Books.find_one() is None:
             return redirect(url_for('upload'))
         return f(*args, **kwargs)
     return decorated_function
@@ -34,7 +31,7 @@ def administrator(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
 
-        user = db.Users.find_one({'username': session.get('username')})
+        user = mongo.Users.find_one({'username': session.get('username')})
 
         if user['role'] != 0:
 
@@ -73,18 +70,18 @@ def register():
         request.form.get('emailadd') and
         request.form.get('password')):
 
-        emailadd = db.Users.find_one({'email_address': request.form.get('emailadd')})
-        username = db.Users.find_one({'username': request.form.get('username')})
+        emailadd = mongo.Users.find_one({'email_address': request.form.get('emailadd')})
+        username = mongo.Users.find_one({'username': request.form.get('username')})
 
         if (emailadd is None) and (username is None):
 
             role = 1
 
-            if db.Users.find_one() is None:
+            if mongo.Users.find_one() is None:
 
                 role = 0
 
-            db.Users.insert({
+            mongo.Users.insert({
                 'username' : request.form.get('username'),
                 'realname' : request.form.get('realname'),
                 'email_address' : request.form.get('emailadd'),
@@ -118,7 +115,7 @@ def login():
     if (request.form.get('username') and
         request.form.get('password')):
 
-        query = db.Users.find_one({'username': request.form.get('username')})
+        query = mongo.Users.find_one({'username': request.form.get('username')})
 
         if query is not None:
 
@@ -159,11 +156,11 @@ def settings():
 
     if request.method == 'GET':
 
-        return render_template('preferences.html', preferences=db.Users.find_one({'username': session.get('username')})['preferences'])
+        return render_template('preferences.html', preferences=mongo.Users.find_one({'username': session.get('username')})['preferences'])
 
     elif request.method == 'POST':
 
-        user = db.Users.find_one({'username': session.get('username')})
+        user = mongo.Users.find_one({'username': session.get('username')})
 
         authorized = request.form.get('authorized').split('\r\n')
 
@@ -183,7 +180,7 @@ def settings():
 
             user['preferences']['confirm'] = False
 
-        db.Users.update({'_id':user['_id']}, user, True)
+        mongo.Users.update({'_id':user['_id']}, user, True)
 
         return ''
 
@@ -195,10 +192,10 @@ def library(page):
 
     perpage = 10
 
-    books = db.Books.find().skip((page-1)*perpage).limit(perpage)
-    cap = db.Books.count() / perpage
+    books = mongo.Books.find().skip((page-1)*perpage).limit(perpage)
+    cap = mongo.Books.count() / perpage
 
-    if db.Books.count() % perpage > 0:
+    if mongo.Books.count() % perpage > 0:
 
         cap += 1
 
@@ -208,7 +205,7 @@ def library(page):
 @authenticated
 def download(id, format):
 
-    book = db.Books.find({'id':id})[0]
+    book = mongo.Books.find({'id':id})[0]
 
     response = send_from_directory(app.config['LIB_DIR'], id+'.'+format)
     response.headers.add('Content-Disposition', 'attachment; filename="' + book['title'] + '.' + format + '"')
@@ -223,10 +220,10 @@ def bygenre(genre, page):
 
     perpage = 10
 
-    books = db.Books.find({'genres':genre}).skip((page-1)*perpage).limit(perpage)
-    cap = db.Books.find({'genres':genre}).count() / perpage
+    books = mongo.Books.find({'genres':genre}).skip((page-1)*perpage).limit(perpage)
+    cap = mongo.Books.find({'genres':genre}).count() / perpage
 
-    if db.Books.count() % perpage > 0:
+    if mongo.Books.count() % perpage > 0:
 
         cap += 1
 
@@ -240,10 +237,10 @@ def byauthor(author, page):
 
     perpage = 10
 
-    books = db.Books.find({'authors':author}).skip((page-1)*perpage).limit(perpage)
-    cap = db.Books.find({'authors':author}).count() / perpage
+    books = mongo.Books.find({'authors':author}).skip((page-1)*perpage).limit(perpage)
+    cap = mongo.Books.find({'authors':author}).count() / perpage
 
-    if db.Books.count() % perpage > 0:
+    if mongo.Books.count() % perpage > 0:
 
         cap += 1
 
@@ -254,7 +251,7 @@ def byauthor(author, page):
 @administrator
 def edit(id):
 
-    book = db.Books.find({"id": id})[0]
+    book = mongo.Books.find({"id": id})[0]
 
     if request.method == 'GET':
 
@@ -279,7 +276,7 @@ def edit(id):
         book['description'] = request.form.get('description')
         book['genres'] = request.form.getlist('genres')
 
-        db.Books.update({'_id':book['_id']}, book, True)
+        mongo.Books.update({'_id':book['_id']}, book, True)
 
         return ''
 
@@ -287,7 +284,7 @@ def edit(id):
 @authenticated
 def book(id):
 
-    books = db.Books.find({"id": id})
+    books = mongo.Books.find({"id": id})
 
     return render_template('book.html', book=books[0])
 
@@ -298,7 +295,7 @@ def upload():
 
     if request.method == 'GET':
 
-        return render_template('upload.html', setting=db.Settings.find_one())
+        return render_template('upload.html', setting=mongo.Settings.find_one())
 
     elif request.method == 'POST':
 
@@ -321,7 +318,7 @@ def upload():
 @administrator
 def confirm(filename, id):
 
-    query = db.Books.find_one({'id': id})
+    query = mongo.Books.find_one({'id': id})
 
     if query is None:
 
@@ -433,7 +430,7 @@ def confirm(filename, id):
 
                 book['genres'].append(genre)
 
-        db.Books.insert(book)
+        mongo.Books.insert(book)
 
     else:
 
@@ -449,7 +446,7 @@ def confirm(filename, id):
 
                 shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], query['id']+'.'+filename.split('.')[-1]))
 
-            db.Books.update({'_id':query['_id']}, query, True)
+            mongo.Books.update({'_id':query['_id']}, query, True)
 
     return ''
 
