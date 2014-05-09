@@ -8,3 +8,4 @@ client = MongoClient(app.config['MONGO']['HOST'], app.config['MONGO']["PORT"])
 mongo = client[app.config['MONGO']['DATABASE']]
 
 import alexandria.web
+import alexandria.api
