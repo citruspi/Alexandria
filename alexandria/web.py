@@ -5,20 +5,10 @@ import shutil
 import requests
 from pymongo import MongoClient
 from functools import wraps
-from flask.ext.openid import OpenID
-
-oid = OpenID(app)
+import bcrypt
 
 client = MongoClient(app.config['MONGOHOST'], app.config['MONGOPORT'])
 db = client[app.config['MONGODB']]
-
-@app.before_request
-def before_request():
-
-    g.user = None
-
-    if 'openid' in session:
-        g.user = db.Users.find_one({'openid': session['openid']})
 
 def not_even_one(f):
     @wraps(f)
@@ -28,108 +18,139 @@ def not_even_one(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def is_administrator(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-
-        user = db.Users.find_one({'openid': session['openid']})
-
-        if user['role'] != 'Administrator':
-
-            return redirect(url_for('library'))
-
-        return f(*args, **kwargs)
-    return decorated_function
-
 def authenticated(f):
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if g.user is None:
-            return redirect(url_for('login'))
-        else:
-            if db.Users.find_one() is not None:
-                if db.Users.find_one({'email': g.user['email']}) is None:
-                    return redirect(url_for('logout'))
+
+        if not session.get('username'):
+
+            return redirect(url_for('portal'))
+
         return f(*args, **kwargs)
     return decorated_function
 
+def administrator(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        user = db.Users.find_one({'username': session.get('username')})
+
+        if user['role'] != 0:
+
+            return redirect(url_for('index'))
+
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/', methods=['GET'])
 def index():
 
-    if g.user is not None:
+    if session.get('username'):
+
         return redirect(url_for('library'))
+
     else:
-        return render_template('login.html')
 
+        return redirect(url_for('portal'))
 
-@app.route('/login')
-@oid.loginhandler
+@app.route('/portal')
+def portal():
+
+    if not session.get('username'):
+
+        return render_template('portal.html')
+
+    else:
+
+        return render_template('index.html')
+
+@app.route('/portal/register', methods=['POST'])
+def register():
+
+    if (request.form.get('username') and
+        request.form.get('realname') and
+        request.form.get('emailadd') and
+        request.form.get('password')):
+
+        emailadd = db.Users.find_one({'email_address': request.form.get('emailadd')})
+        username = db.Users.find_one({'username': request.form.get('username')})
+
+        if (emailadd is None) and (username is None):
+
+            role = 1
+
+            if db.Users.find_one() is None:
+
+                role = 0
+
+            db.Users.insert({
+                'username' : request.form.get('username'),
+                'realname' : request.form.get('realname'),
+                'email_address' : request.form.get('emailadd'),
+                'password' : bcrypt.hashpw(request.form.get('password').encode('utf-8'), bcrypt.gensalt()),
+                'role' : role
+            })
+
+            return 'Registration completed successfully.'
+
+        else:
+
+            if emailadd is not None:
+
+                return 'Email address already registered.'
+
+            elif username is not None:
+
+                return 'Username is already registered.'
+
+    else:
+
+        return 'Please fill out all the fields.'
+
+@app.route('/portal/login', methods=['POST'])
 def login():
 
-    if g.user is not None:
+    if (request.form.get('username') and
+        request.form.get('password')):
 
-        return redirect(url_for('library'))
+        query = db.Users.find_one({'username': request.form.get('username')})
 
-    return oid.try_login('https://www.google.com/accounts/o8/id',
-                             ask_for=['email', 'fullname'])
+        if query is not None:
+
+            if bcrypt.hashpw(request.form.get('password').encode('utf-8'), query['password'].encode('utf8')) == query['password']:
+
+                session['username'] = request.form.get('username')
+                session['role'] = query['role']
+                session['realname'] = query['realname']
+
+                return redirect(url_for('index'))
+
+            else:
+
+                return 'Incorrect login.'
+
+        else:
+
+            return 'Username not registered.'
+
+    else:
+
+        return 'Please fill out all the fields.'
+
 
 @app.route('/logout')
 def logout():
 
-    session.pop('openid', None)
+    session.pop('username', None)
+    session.pop('role', None)
+    session.pop('realname', None)
+
     return redirect(url_for('index'))
-
-@oid.after_login
-def create_or_login(resp):
-
-
-    if db.Settings.find_one():
-
-        if resp.email not in db.Settings.find_one()['authorized']:
-
-            return redirect(url_for('logout'))
-
-    session['openid'] = resp.identity_url
-    user = db.Users.find_one({'openid':resp.identity_url})
-    if user is not None:
-        g.user = user
-    else:
-
-        if db.Users.find_one() is None:
-
-            db.Users.insert({
-                'name': resp.fullname or resp.nickname,
-                'email': resp.email,
-                'openid': session['openid'],
-                'role': 'Administrator'
-            })
-
-            db.Settings.insert({
-                'authorized': [resp.email],
-                'confirm': False
-            })
-
-        else:
-
-            if resp.email in db.Settings.find_one()['authorized']:
-
-                db.Users.insert({
-                    'name': resp.fullname or resp.nickname,
-                    'email': resp.email,
-                    'openid': session['openid'],
-                    'role': 'User'
-                })
-
-            else:
-
-                redirect(url_for('logout'))
-
-    return redirect(oid.get_next_url())
 
 @app.route('/settings', methods=['GET', 'POST'])
 @authenticated
-@is_administrator
+@administrator
 def settings():
 
     if request.method == 'GET':
@@ -226,7 +247,7 @@ def byauthor(author, page):
 
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 @authenticated
-@is_administrator
+@administrator
 def edit(id):
 
     book = db.Books.find({"id": id})[0]
@@ -268,7 +289,7 @@ def book(id):
 
 @app.route('/upload', methods=['GET', 'POST'])
 @authenticated
-@is_administrator
+@administrator
 def upload():
 
     if request.method == 'GET':
@@ -293,7 +314,7 @@ def upload():
 
 @app.route('/confirm/<filename>/<id>', methods=['POST'])
 @authenticated
-@is_administrator
+@administrator
 def confirm(filename, id):
 
     query = db.Books.find_one({'id': id})

@@ -39,7 +39,7 @@
             </dd>
         </dl>
 
-        {% if g.user['role'] == 'Administrator' %}<a href="/edit/{{ book['id'] }}">Edit</a>{% endif %}
+        {% if session.get('role') == 0 %}<a href="/edit/{{ book['id'] }}">Edit</a>{% endif %}
 
     </div>
 
