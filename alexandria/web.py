@@ -298,8 +298,6 @@ def confirm(filename, id):
 
         book = {}
 
-        book['id'] = r['id']
-
         if 'title' in r['volumeInfo']:
 
             book['title'] = r['volumeInfo']['title']
