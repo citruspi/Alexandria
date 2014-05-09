@@ -7,9 +7,11 @@ class Config(object):
     TEMP_DIR = 'tmp'
     LIB_DIR = 'books'
 
-    MONGOHOST = 'localhost'
-    MONGOPORT = 27017
-    MONGODB = 'Alexandria'
+    MONGO = {
+        'HOST' : 'localhost',
+        'PORT' : 27017,
+        'DATABASE' : 'Alexandria'
+    }
 
 class Debug(Config):
 
