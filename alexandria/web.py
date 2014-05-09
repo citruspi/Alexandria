@@ -1,4 +1,5 @@
 from alexandria import app, mongo
+from decorators import *
 from flask import render_template, request, jsonify, g, send_from_directory, redirect, url_for, session, flash
 import os
 import shutil
@@ -6,39 +7,6 @@ import requests
 from pymongo import MongoClient
 from functools import wraps
 import bcrypt
-
-def not_even_one(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if mongo.Books.find_one() is None:
-            return redirect(url_for('upload'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-def authenticated(f):
-
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-
-        if not session.get('username'):
-
-            return redirect(url_for('portal'))
-
-        return f(*args, **kwargs)
-    return decorated_function
-
-def administrator(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-
-        user = mongo.Users.find_one({'username': session.get('username')})
-
-        if user['role'] != 0:
-
-            return redirect(url_for('index'))
-
-        return f(*args, **kwargs)
-    return decorated_function
 
 @app.route('/', methods=['GET'])
 def index():
