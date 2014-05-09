@@ -396,6 +396,10 @@ def confirm(filename, id):
 
                 book['genres'].append(genre)
 
+        user = mongo.Users.find_one({'username': session.get('username')})
+
+        book['owner'] = user['_id']
+
         mongo.Books.insert(book)
 
     else:
