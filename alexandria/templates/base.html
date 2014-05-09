@@ -30,7 +30,7 @@
                     {% if session.get('role') == 0 %}
                     <li id="upload_menu"><a href="/upload"> <i class="fa fa-upload"></i> &nbsp;Upload</a></li>
                     <li class="divider"></li>
-                    <li id="settings_menu"><a href="/settings"> <i class="fa fa-cogs"></i> &nbsp;Settings</a></li>
+                    <li id="settings_menu"><a href="/preferences"> <i class="fa fa-cogs"></i> &nbsp;Preferences</a></li>
                     <li class="divider"></li>
                     {% endif %}
                     <li><a href="/logout"> <i class="fa fa-power-off"></i> &nbsp;Sign Out {{ session.get('realname').split(' ')[0] }}</a></li>

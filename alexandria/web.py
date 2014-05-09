@@ -89,7 +89,11 @@ def register():
                 'realname' : request.form.get('realname'),
                 'email_address' : request.form.get('emailadd'),
                 'password' : bcrypt.hashpw(request.form.get('password').encode('utf-8'), bcrypt.gensalt()),
-                'role' : role
+                'role' : role,
+                'preferences' : {
+                    'confirm' : True,
+                    'authorized' : []
+                }
             })
 
             return 'Registration completed successfully.'
@@ -148,38 +152,38 @@ def logout():
 
     return redirect(url_for('index'))
 
-@app.route('/settings', methods=['GET', 'POST'])
+@app.route('/preferences', methods=['GET', 'POST'])
 @authenticated
 @administrator
 def settings():
 
     if request.method == 'GET':
 
-        return render_template('settings.html', setting=db.Settings.find_one())
+        return render_template('preferences.html', preferences=db.Users.find_one({'username': session.get('username')})['preferences'])
 
     elif request.method == 'POST':
 
+        user = db.Users.find_one({'username': session.get('username')})
+
         authorized = request.form.get('authorized').split('\r\n')
 
-        setting = db.Settings.find_one()
-
-        setting['authorized'] = []
+        user['preferences']['authorized'] = []
 
         for auth in authorized:
 
             if auth != '':
 
-                setting['authorized'].append(auth)
+                user['preferences']['authorized'].append(auth)
 
         if len(request.form.getlist('confirm')) > 0:
 
-            setting['confirm'] = True
+            user['preferences']['confirm'] = True
 
         else:
 
-            setting['confirm'] = False
+            user['preferences']['confirm'] = False
 
-        db.Settings.update({'_id':setting['_id']}, setting, True)
+        db.Users.update({'_id':user['_id']}, user, True)
 
         return ''
 

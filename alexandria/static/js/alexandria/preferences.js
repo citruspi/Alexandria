@@ -1,5 +1,5 @@
 function save(){
-    $.post("/settings", $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
+    $.post("/preferences", $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
         $.growl.notice({
             title: "Success!",
             message: "Settings saved!"

@@ -21,7 +21,7 @@
         <div class="large-12 columns">
 
             <h5>Confirmation</h5>
-            <input name="confirm" value="true" type="checkbox" {% if setting['confirm'] %}checked{% endif %}><label for="checkbox1">Manually confirm eBook metadata when uploading</label>
+            <input name="confirm" value="true" type="checkbox" {% if preferences['confirm'] %}checked{% endif %}><label for="checkbox1">Manually confirm eBook metadata when uploading</label>
 
             <label><sup>&#10033;</sup> Enabling this will limit you to dragging and dropping one eBook at a time.</label>
 
@@ -44,7 +44,7 @@
         <div class="large-12 columns">
 
             <h5>Authorized Users (One Per Line)</h5>
-                <textarea style="resize: none;" name="authorized" rows="10">{% for authorized in setting['authorized'] %}{{ authorized + '\n' }}{% endfor %}</textarea>
+                <textarea style="resize: none;" name="authorized" rows="10">{% for authorized in preferences['authorized'] %}{{ authorized + '\n' }}{% endfor %}</textarea>
 
         </div>
 
@@ -62,11 +62,12 @@
 
     </div>
 
+
 </form>
 
 {% include 'scripts.html' %}
 
 <script src="/static/js/jquery.growl.js"></script>
-<script src="/static/js/alexandria/settings.js"></script>
+<script src="/static/js/alexandria/preferences.js"></script>
 
 {% endblock %}
