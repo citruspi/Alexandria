@@ -1,13 +1,11 @@
-from flask import Flask, render_template, request, jsonify, g, send_from_directory, redirect, url_for, session, flash
+from alexandria import app
+from flask import render_template, request, jsonify, g, send_from_directory, redirect, url_for, session, flash
 import os
 import shutil
 import requests
 from pymongo import MongoClient
 from functools import wraps
 from flask.ext.openid import OpenID
-
-app = Flask(__name__)
-app.config.from_object('config.Debug')
 
 oid = OpenID(app)
 
