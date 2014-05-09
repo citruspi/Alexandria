@@ -380,9 +380,9 @@ def confirm(filename, id):
 
                 book['cover'] = ''
 
-        book['files'] = []
+        book['formats'] = []
 
-        book['files'].append(filename.split('.')[-1])
+        book['formats'].append(filename.split('.')[-1])
 
         book['genres'] = []
 
@@ -404,13 +404,13 @@ def confirm(filename, id):
 
     else:
 
-        if filename.split('.')[-1] in query['files']:
+        if filename.split('.')[-1] in query['formats']:
 
             return jsonify(error='The format \'' + filename.split('.')[-1] + '\' already exists.'), 409
 
         else:
 
-            query['files'].append(filename.split('.')[-1])
+            query['formats'].append(filename.split('.')[-1])
 
             if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
 
