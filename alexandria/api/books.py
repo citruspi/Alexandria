@@ -21,6 +21,8 @@ class BooksView(FlaskView):
             book['id'] = book['_id']['$oid']
             book.pop('_id')
 
+            book['owner'] = book['owner']['$oid']
+
         return jsonify(books=books)
 
     @authenticated
@@ -34,6 +36,8 @@ class BooksView(FlaskView):
 
             book['id'] = book['_id']['$oid']
             book.pop('_id')
+
+            book['owner'] = book['owner']['$oid']
 
         return jsonify(books=books)
 
@@ -49,6 +53,8 @@ class BooksView(FlaskView):
 
             book['id'] = book['_id']['$oid']
             book.pop('_id')
+
+            book['owner'] = book['owner']['$oid']
 
         return jsonify(books=books)
 
