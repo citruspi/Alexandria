@@ -161,12 +161,12 @@ function getResults() {
 
         $("#select").empty();
 
-        $.getJSON( "https://www.googleapis.com/books/v1/volumes?q="+query, function( data ) {
+        $.getJSON( "/api/upload/search/"+query, function( data ) {
 
-            window.results = data.items;
+            window.results = data.results.items;
 
             listResults();
-            displayResult(data.items[0].id);
+            displayResult(data.results.items[0].id);
 
 
         });
