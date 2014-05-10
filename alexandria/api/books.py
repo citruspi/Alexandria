@@ -18,7 +18,6 @@ class BooksView(FlaskView):
 
         for book in books:
 
-            book['id'] = book['_id']['$oid']
             book.pop('_id')
 
             book['owner'] = book['owner']['$oid']
@@ -34,7 +33,6 @@ class BooksView(FlaskView):
 
         for book in books:
 
-            book['id'] = book['_id']['$oid']
             book.pop('_id')
 
             book['owner'] = book['owner']['$oid']
@@ -51,7 +49,6 @@ class BooksView(FlaskView):
 
         for book in books:
 
-            book['id'] = book['_id']['$oid']
             book.pop('_id')
 
             book['owner'] = book['owner']['$oid']

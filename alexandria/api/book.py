@@ -17,7 +17,6 @@ class BookView(FlaskView):
 
         book = json.loads(json_util.dumps(query, default=json_util.default))
 
-        book['id'] = book['_id']['$oid']
         book.pop('_id')
 
         book['owner'] = book['owner']['$oid']

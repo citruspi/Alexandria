@@ -7,6 +7,7 @@ import requests
 from pymongo import MongoClient
 from functools import wraps
 import bcrypt
+from bson.objectid import ObjectId
 
 @app.route('/', methods=['GET'])
 def index():
@@ -400,7 +401,13 @@ def confirm(filename, id):
 
         book['owner'] = user['_id']
 
-        mongo.Books.insert(book)
+        id = mongo.Books.insert(book)
+
+        book = mongo.Books.find_one({'_id': ObjectId(id)})
+
+        book['id'] = str(id)
+
+        mongo.Books.update({'_id':ObjectId(id)}, book, True)
 
     else:
 
