@@ -263,7 +263,7 @@ def upload():
 
     if request.method == 'GET':
 
-        return render_template('upload.html', setting=mongo.Settings.find_one())
+        return render_template('upload.html', preferences=mongo.Users.find_one({'username': session.get('username')})['preferences'])
 
     elif request.method == 'POST':
 

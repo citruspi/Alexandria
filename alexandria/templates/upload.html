@@ -139,7 +139,7 @@
     {% include "scripts.html" %}
 
     <script type="text/javascript">
-    {% if setting['confirm'] %}
+    {% if preferences['confirm'] %}
     window.confirm = true;
     {% else %}
     window.confirm = false;
