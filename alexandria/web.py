@@ -399,7 +399,7 @@ def confirm(filename, id):
 
         user = mongo.Users.find_one({'username': session.get('username')})
 
-        book['owner'] = user['_id']
+        book['owner'] = str(user['_id'])
 
         id = mongo.Books.insert(book)
 

@@ -20,8 +20,6 @@ class BooksView(FlaskView):
 
             book.pop('_id')
 
-            book['owner'] = book['owner']['$oid']
-
         return jsonify(books=books)
 
     @authenticated
@@ -34,8 +32,6 @@ class BooksView(FlaskView):
         for book in books:
 
             book.pop('_id')
-
-            book['owner'] = book['owner']['$oid']
 
         return jsonify(books=books)
 
@@ -50,8 +46,6 @@ class BooksView(FlaskView):
         for book in books:
 
             book.pop('_id')
-
-            book['owner'] = book['owner']['$oid']
 
         return jsonify(books=books)
 

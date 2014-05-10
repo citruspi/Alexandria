@@ -16,10 +16,7 @@ class BookView(FlaskView):
         query = mongo.Books.find_one({'_id': ObjectId(id)})
 
         book = json.loads(json_util.dumps(query, default=json_util.default))
-
         book.pop('_id')
-
-        book['owner'] = book['owner']['$oid']
 
         return jsonify(book=book)
 
