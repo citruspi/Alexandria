@@ -293,10 +293,6 @@ def confirm(filename, id):
 
         r = requests.get('https://www.googleapis.com/books/v1/volumes/'+id).json()
 
-        if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
-
-            shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], r['id']+'.'+filename.split('.')[-1]))
-
         book = {}
 
         if 'title' in r['volumeInfo']:
@@ -408,6 +404,10 @@ def confirm(filename, id):
         book['id'] = str(id)
 
         mongo.Books.update({'_id':ObjectId(id)}, book, True)
+
+        if os.path.isfile(os.path.join(app.config['TEMP_DIR'], filename)):
+
+            shutil.move(os.path.join(app.config['TEMP_DIR'], filename), os.path.join(app.config['LIB_DIR'], book['id']+'.'+filename.split('.')[-1]))
 
     else:
 
