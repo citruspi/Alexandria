@@ -32,7 +32,7 @@
             <dt><i class="fa fa-download"></i> Downloads</dt>
             <dd>
                 <ul class="button-group">
-                    {% for format in book['files'] %}
+                    {% for format in book['formats'] %}
                     <li><a href="/download/{{ book['id'] }}/{{ format }}" class="button small">{{ format }}</a></li>
                     {% endfor %}
                 </ul>
