@@ -1,0 +1,18 @@
+.tt-dropdown-menu {
+    border: 1px solid #999; background: #FFF; overflow: auto;
+    padding-top: 10px;
+    width: 530px;
+}
+
+.tt-suggestion {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.tt-cursor {
+    background: rgba(148, 229, 255, 1);
+}
+
+.tt-input {
+    width: 550%;
+}

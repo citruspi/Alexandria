@@ -4,186 +4,459 @@
 
     <div class="previewsContainer" style="display: none;"></div>
 
-    <div id="notice">
-        <center><h2>drag and drop an ebook here</h2><h3>(or click anywhere if you're stuck in 1995)</center>
-    </div>
+    <div class="row" id="notice">
 
-    <div class="row">
+        <div class="large-8 large-offset-2 columns" id="box" style="background: #fafafa; border-style:dashed; border-width:2px; border-radius: 20px; height:30em;">
+            <div id="text">
+                <center><h2 id="text">Drag and Drop eBooks Here</h2></center>
+                <center><h1><small>(One Book At A Time)</small></h1></center>
+            </div>
+        </div>
 
-        <div class="large-6 columns">
+        <div class="large-8 large-offset-2 columns" style="display: none;" id="part-1">
 
-            <div id="myModal" class="reveal-modal reveal-modal-small" data-reveal>
+            <form name="search">
+                <div class="row collapse">
 
-                <form onsubmit="getResults(); return false;">
+                    <div class="large-10 columns">
 
-                    <div class="row collapse">
+                        <input type="text" placeholder="Search by ISBN or title" id="query">
 
-                        <div class="large-10 columns">
+                    </div>
 
-                            <input type="text" placeholder="Search by ISBN or title" id="query">
+                    <div class="large-2 columns">
 
-                        </div>
+                        <a href="#" class="button postfix" id="search">SEARCH</a>
 
-                        <div class="large-2 columns">
+                    </div>
+                </div>
+            </form>
 
-                            <a href="#" class="button postfix">SEARCH</a>
+            <div class="row">
+
+                <div class="large-12 columns">
+                    <hr>
+                </div>
+
+            </div>
+
+            <form name="form-1">
+
+                <div class="row">
+
+                    <div class="large-6 columns">
+                        <label>Title</label>
+                        <input type="text" placeholder="Title" id="title">
+
+                    </div>
+
+                    <div class="large-6 columns">
+                        <label>Subtitle</label>
+                        <input type="text" placeholder="Subtitle" id="subtitle">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <div class="row collapse">
+
+                            <div class="large-10 columns">
+
+                                <input type="text" placeholder="Author" id="pauthor">
+
+                            </div>
+
+                            <div class="large-2 columns">
+
+                                <a href="#" class="button postfix" id="add-author">ADD</a>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </form>
+                </div>
 
-                <div id="results">
-                <hr>
+                <div class="row">
 
-                <form onsubmit="confirmResult(); return false;" name="confirm">
+                    <div class="large-12 columns">
 
-                    <div class="row">
-                        <div class="large-10 columns">
-                            <select id="select">
-                            </select>
-                        </div>
-                        <div class="large-2 columns">
-                            <a href="#" class="button postfix" onclick="confirmResult();">CONFIRM</a>
-                        </div>
+                        <table id="authors">
+                            <thead>
+                                <tr>
+                                    <td width="700">Authors</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
                     </div>
 
-                    <div class="row">
+                </div>
 
-                        <div class="large-12 columns">
+                <div class="row">
 
-                            <dl class="accordion" data-accordion>
+                    <div class="large-6 columns">
+                        <label>Publisher</label>
+                        <input type="text" placeholder="Publisher" id="publisher">
 
-                                <dd>
+                    </div>
 
-                                    <a href="#panel1">Genres</a>
+                    <div class="large-6 columns">
+                        <label>Date Published</label>
+                        <input type="text" placeholder="Date Published" id="date-published">
 
-                                    <div id="panel1" class="content">
+                    </div>
 
-                                        <div class="row">
+                </div>
 
-                                            <div class="large-3 columns">
-                                                <input name="genres" type="checkbox" value="Art"><label>Art</label><br>
-                                                <input name="genres" type="checkbox" value="Biography"><label>Biography</label><br>
-                                                <input name="genres" type="checkbox" value="Business"><label>Business</label><br>
-                                                <input name="genres" type="checkbox" value="Chick Lit"><label>Chick Lit</label><br>
-                                                <input name="genres" type="checkbox" value="Children's"><label>Children's</label><br>
-                                                <input name="genres" type="checkbox" value="Classics"><label>Classics</label><br>
-                                                <input name="genres" type="checkbox" value="Comics"><label>Comics</label><br>
-                                                <input name="genres" type="checkbox" value="Computers"><label>Computers</label><br>
-                                                <input name="genres" type="checkbox" value="Contemporary"><label>Contemporary</label><br>
-                                                <input name="genres" type="checkbox" value="Cookbooks"><label>Cookbooks</label><br>
-                                            </div>
 
-                                            <div class="large-3 columns">
-                                                <input name="genres" type="checkbox" value="Crime"><label>Crime</label><br>
-                                                <input name="genres" type="checkbox" value="Fantasy"><label>Fantasy</label><br>
-                                                <input name="genres" type="checkbox" value="Fiction"><label>Fiction</label><br>
-                                                <input name="genres" type="checkbox" value="Gay and Lesbian"><label>Gay and Lesbian</label><br>
-                                                <input name="genres" type="checkbox" value="Graphic Novels"><label>Graphic Novels</label><br>
-                                                <input name="genres" type="checkbox" value="Historical Fiction"><label>Historical Fiction</label><br>
-                                                <input name="genres" type="checkbox" value="History"><label>History</label><br>
-                                                <input name="genres" type="checkbox" value="Horror"><label>Horror</label><br>
-                                                <input name="genres" type="checkbox" value="Humor and Comedy"><label>Humor and Comedy</label><br>
-                                                <input name="genres" type="checkbox" value="Manga"><label>Manga</label><br>
-                                            </div>
+                <div class="row">
 
-                                            <div class="large-3 columns">
-                                                <input name="genres" type="checkbox" value="Memoirs"><label>Memoirs</label><br>
-                                                <input name="genres" type="checkbox" value="Music"><label>Music</label><br>
-                                                <input name="genres" type="checkbox" value="Mystery"><label>Mystery</label><br>
-                                                <input name="genres" type="checkbox" value="Non Fiction"><label>Non Fiction</label><br>
-                                                <input name="genres" type="checkbox" value="Other"><label>Other</label><br>
-                                                <input name="genres" type="checkbox" value="Paranormal"><label>Paranormal</label><br>
-                                                <input name="genres" type="checkbox" value="Philosophy"><label>Philosophy</label><br>
-                                                <input name="genres" type="checkbox" value="Poetry"><label>Poetry</label><br>
-                                                <input name="genres" type="checkbox" value="Psychology"><label>Psychology</label><br>
-                                                <input name="genres" type="checkbox" value="Religion"><label>Religion</label><br>
-                                            </div>
+                    <div class="large-6 columns">
+                        <label>ISBN 10</label>
+                        <input type="text" placeholder="ISBN 10" id="isbn-10">
 
-                                            <div class="large-3 columns">
-                                                <input name="genres" type="checkbox" value="Romance"><label>Romance</label><br>
-                                                <input name="genres" type="checkbox" value="Science"><label>Science</label><br>
-                                                <input name="genres" type="checkbox" value="Science Fiction"><label>Science Fiction</label><br>
-                                                <input name="genres" type="checkbox" value="Self Help"><label>Self Help</label><br>
-                                                <input name="genres" type="checkbox" value="Suspense"><label>Suspense</label><br>
-                                                <input name="genres" type="checkbox" value="Spirituality"><label>Spirituality</label><br>
-                                                <input name="genres" type="checkbox" value="Sports"><label>Sports</label><br>
-                                                <input name="genres" type="checkbox" value="Thriller"><label>Thriller</label><br>
-                                                <input name="genres" type="checkbox" value="Travel"><label>Travel</label><br>
-                                                <input name="genres" type="checkbox" value="Young Adult"><label>Young Adult</label><br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </dd>
-                            </dl>
+                    </div>
+
+                    <div class="large-6 columns">
+                        <label>ISBN 13</label>
+                        <input type="text" placeholder="ISBN 13" id="isbn-13">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <a class="button small" style="width:100%" id="continue-1">CONTINUE</a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div id="part-2" class="large-8 large-offset-2 columns" style="display:none;">
+
+            <form name="form-2">
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <h4>Genres</h4>
+                        <hr>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <div class="row collapse">
+
+                            <div class="large-10 columns">
+
+                                <input type="text" placeholder="Genre" id="pgenre">
+
+                            </div>
+
+                            <div class="large-2 columns">
+
+                                <a href="#" class="button postfix" id="add-genre">ADD</a>
+
+                            </div>
+
                         </div>
+
                     </div>
 
-                    <br>
+                </div>
 
-                    <div class="row" id="result">
-                        <!-- -->
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <table id="genres">
+                            <thead>
+                                <tr>
+                                    <td width="700">Genres</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
                     </div>
 
-                </form>
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <a class="button small" style="width:100%" id="continue-2">CONTINUE</a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div id="part-3" class="large-8 large-offset-2 columns" style="display:none;">
+
+            <form name="part-5">
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <h4>Description</h4>
+                        <hr>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <div id="content-container">
+                          <div class="editor-wrapper">
+                            <div class="toolbar-container"><span class="sc-format-group">
+                                <select title="Font" class="sc-font">
+                                  <option value="sans-serif" selected>Sans Serif</option>
+                                  <option value="serif">Serif</option>
+                                  <option value="monospace">Monospace</option>
+                                </select>
+                                <select title="Size" class="sc-size">
+                                  <option value="10px">Small</option>
+                                  <option value="13px" selected>Normal</option>
+                                  <option value="18px">Large</option>
+                                  <option value="32px">Huge</option>
+                                </select></span><span class="sc-format-group"><span title="Bold" class="sc-format-button sc-bold"></span><span class="sc-format-separator"></span><span title="Italic" class="sc-format-button sc-italic"></span><span class="sc-format-separator"></span><span title="Underline" class="sc-format-button sc-underline"></span></span><span class="sc-format-group">
+                                <select title="Text Color" class="sc-color">
+                                  <option value="rgb(0, 0, 0)" selected></option>
+                                  <option value="rgb(230, 0, 0)"></option>
+                                  <option value="rgb(255, 153, 0)"></option>
+                                  <option value="rgb(255, 255, 0)"></option>
+                                  <option value="rgb(0, 138, 0)"></option>
+                                  <option value="rgb(0, 102, 204)"></option>
+                                  <option value="rgb(153, 51, 255)"></option>
+                                  <option value="rgb(255, 255, 255)"></option>
+                                  <option value="rgb(250, 204, 204)"></option>
+                                  <option value="rgb(255, 235, 204)"></option>
+                                  <option value="rgb(255, 255, 204)"></option>
+                                  <option value="rgb(204, 232, 204)"></option>
+                                  <option value="rgb(204, 224, 245)"></option>
+                                  <option value="rgb(235, 214, 255)"></option>
+                                  <option value="rgb(187, 187, 187)"></option>
+                                  <option value="rgb(240, 102, 102)"></option>
+                                  <option value="rgb(255, 194, 102)"></option>
+                                  <option value="rgb(255, 255, 102)"></option>
+                                  <option value="rgb(102, 185, 102)"></option>
+                                  <option value="rgb(102, 163, 224)"></option>
+                                  <option value="rgb(194, 133, 255)"></option>
+                                  <option value="rgb(136, 136, 136)"></option>
+                                  <option value="rgb(161, 0, 0)"></option>
+                                  <option value="rgb(178, 107, 0)"></option>
+                                  <option value="rgb(178, 178, 0)"></option>
+                                  <option value="rgb(0, 97, 0)"></option>
+                                  <option value="rgb(0, 71, 178)"></option>
+                                  <option value="rgb(107, 36, 178)"></option>
+                                  <option value="rgb(68, 68, 68)"></option>
+                                  <option value="rgb(92, 0, 0)"></option>
+                                  <option value="rgb(102, 61, 0)"></option>
+                                  <option value="rgb(102, 102, 0)"></option>
+                                  <option value="rgb(0, 55, 0)"></option>
+                                  <option value="rgb(0, 41, 102)"></option>
+                                  <option value="rgb(61, 20, 102)"></option>
+                                </select><span class="sc-format-separator"></span>
+                                <select title="Background Color" class="sc-background">
+                                  <option value="rgb(0, 0, 0)"></option>
+                                  <option value="rgb(230, 0, 0)"></option>
+                                  <option value="rgb(255, 153, 0)"></option>
+                                  <option value="rgb(255, 255, 0)"></option>
+                                  <option value="rgb(0, 138, 0)"></option>
+                                  <option value="rgb(0, 102, 204)"></option>
+                                  <option value="rgb(153, 51, 255)"></option>
+                                  <option value="rgb(255, 255, 255)" selected></option>
+                                  <option value="rgb(250, 204, 204)"></option>
+                                  <option value="rgb(255, 235, 204)"></option>
+                                  <option value="rgb(255, 255, 204)"></option>
+                                  <option value="rgb(204, 232, 204)"></option>
+                                  <option value="rgb(204, 224, 245)"></option>
+                                  <option value="rgb(235, 214, 255)"></option>
+                                  <option value="rgb(187, 187, 187)"></option>
+                                  <option value="rgb(240, 102, 102)"></option>
+                                  <option value="rgb(255, 194, 102)"></option>
+                                  <option value="rgb(255, 255, 102)"></option>
+                                  <option value="rgb(102, 185, 102)"></option>
+                                  <option value="rgb(102, 163, 224)"></option>
+                                  <option value="rgb(194, 133, 255)"></option>
+                                  <option value="rgb(136, 136, 136)"></option>
+                                  <option value="rgb(161, 0, 0)"></option>
+                                  <option value="rgb(178, 107, 0)"></option>
+                                  <option value="rgb(178, 178, 0)"></option>
+                                  <option value="rgb(0, 97, 0)"></option>
+                                  <option value="rgb(0, 71, 178)"></option>
+                                  <option value="rgb(107, 36, 178)"></option>
+                                  <option value="rgb(68, 68, 68)"></option>
+                                  <option value="rgb(92, 0, 0)"></option>
+                                  <option value="rgb(102, 61, 0)"></option>
+                                  <option value="rgb(102, 102, 0)"></option>
+                                  <option value="rgb(0, 55, 0)"></option>
+                                  <option value="rgb(0, 41, 102)"></option>
+                                  <option value="rgb(61, 20, 102)"></option>
+                                </select><span class="sc-format-separator"></span>
+                                <select title="Text Alignment" class="sc-align">
+                                  <option value="left" selected></option>
+                                  <option value="center"></option>
+                                  <option value="right"></option>
+                                  <option value="justify"></option>
+                                </select></span><span class="sc-format-group"><span title="Link" class="sc-format-button sc-link"></span><span class="sc-format-separator"></span><span title="Image" class="sc-format-button sc-image"></span></span></div>
+                            <div class="editor-container"></div>
+                          </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <a class="button small" style="width:100%" id="continue-3">CONTINUE</a>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div id="part-4" class="large-8 large-offset-2 columns" style="display:none;">
+
+            <form name="part-4">
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <h4>Cover Image</h4>
+                        <hr>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <div class="row collapse">
+
+                            <div class="large-10 columns">
+
+                                <input type="text" placeholder="Cover" id="pcover">
+
+                            </div>
+
+                            <div class="large-2 columns">
+
+                                <a href="#" class="button postfix" id="preview-cover">PREVIEW</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+
+                        <center><a class="th"><img src="" id="cover-view" width="100%"></a></center>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="large-12 columns">
+                            <a class="button small" style="width:100%" id="continue-4">UPLOAD</a>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div id="part-5" class="large-8 large-offset-2 columns" style="display:none;">
+
+            <div class="row">
+
+                <div class="progress large-12" id="progress">
+                    <span class="meter" style="width: 100%" id="meter"></span>
                 </div>
 
             </div>
 
         </div>
 
+        <div id="part-6" class="large-8 large-offset-2 columns" style="display:none;">
+
+            <div class="row">
+
+                <center><h3>Success! Now What?</h3></center>
+                <br><br>
+                <center><a href="#" class="button" id="repeat" style="width:50%;">UPLOAD ANOTHER BOOK</a></center>
+                <center><h3><i>- or -</i></h3></center>
+                <br>
+                <center><a href="#" class="button" id="library" style="width:50%">BACK TO MY LIBRARY</a></center>
+
+            </div>
+
+        </div>
+
+        <div style="display:none;"></div>
+
     </div>
 
     {% include "scripts.html" %}
-
-    <script type="text/javascript">
-    {% if preferences['confirm'] %}
-    window.confirm = true;
-    {% else %}
-    window.confirm = false;
-    {% endif %}
-    </script>
 
     <script src="/static/libs/flexverticalcenter/flexverticalcenter.js"></script>
     <script src="/static/libs/dropzone/dropzone.js"></script>
     <script src="/static/libs/mustache/mustache.js"></script>
     <script src="/static/libs/jquery-growl/jquery.growl.js"></script>
-    <script src="/static/js/upload.js"></script>
+    <script src="/static/libs/typeahead/typeahead.bundle.js"></script>
+    <script src="/static/libs/quill/quill.min.js"></script>
+    <script src="/static/js/upload2.js"></script>
 
-    <script id="template" type="x-tmpl-mustache">
-        {% raw %}
-        <div class="large-3 columns">
-            <img src="{{ cover }}" width="100%">
-        </div>
-        <div class="large-9 columns">
-            {{ #title }}
-            <dl>
-                <dt>Title</dt>
-                <dd>{{ title }}</dd>
-            </dl>
-            {{ /title }}
-            {{ #subtitle }}
-            <dl>
-                <dt>Subtitle</dt>
-                <dd>{{ subtitle }}</dd>
-            </dl>
-            {{ /subtitle }}
-            <dl>
-                <dt>Author(s)</dt>
-                {{ #authors }}
-                <dd>{{ . }}</dd>
-                {{ /authors }}
-            </dl>
-            {{ #description }}
-            <dl>
-                <dt>Description</dt>
-                <dd>{{ description }}</dd>
-            </dl>
-            {{ /description }}
-        </div>
-        {% endraw %}
-    </script>
 
 {% endblock %}
