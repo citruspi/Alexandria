@@ -1,0 +1,17 @@
+{
+  "name": "Alexandria",
+  "version": "0.0.0",
+  "homepage": "https://github.com/citruspi/Alexandria",
+  "authors": [
+    "Mihir Singh (@citruspi)"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "growl": "~1.1.6",
+    "jquery": "~2.1.1",
+    "mustache": "~0.8.1",
+    "dropzone": "~3.9.0",
+    "foundation": "~5.2.2"
+  }
+}
