@@ -5,6 +5,9 @@ libs:
 	rm -f master.zip
 	rm -rf js-flex-vertical-align-master
 
+	rm -f quill.tar.gz
+	rm -rf quill
+
 	rm -rf alexandria/static/libs
 	mkdir alexandria/static/libs
 
@@ -50,3 +53,13 @@ libs:
 
 	rm -f master.zip
 	rm -rf js-flex-vertical-align-master
+
+	curl -OL https://github.com/quilljs/quill/releases/download/v0.13.2/quill.tar.gz && tar -zxvf quill.tar.gz
+
+	mkdir alexandria/static//libs/quill
+
+	cp quill/quill.min.js alexandria/static/libs/quill/.
+	cp quill/themes/quill.snow.css alexandria/static/libs/quill/.
+
+	rm -f quill.tar.gz
+	rm -rf quill
