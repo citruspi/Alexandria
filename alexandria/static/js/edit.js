@@ -1,4 +1,11 @@
 function save(){
+
+    var description = document.createElement('input');
+    description.type = "hidden";
+    description.name = "description";
+    description.value = window.descriptionEditor.getHTML();
+    document.forms.edit.appendChild(description);
+
     $.post("/edit/"+window.id, $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
         $.growl.notice({
             title: "Success!",
@@ -11,4 +18,26 @@ function save(){
             message: 'The edit failed to save!'
         });
     });
+
+    document.forms.edit.removeChild(document.getElementsByName("description")[0]);
+
 }
+
+(function() {
+
+  var descriptionEditor, cursorManager;
+
+  descriptionEditor = new Quill('.editor-wrapper .editor-container', {
+    modules: {
+      'toolbar': {
+        container: '.editor-wrapper .toolbar-container'
+      },
+      'link-tooltip': true,
+      'image-tooltip': true,
+    },
+    theme: 'snow'
+  });
+
+  window.descriptionEditor = descriptionEditor;
+
+}).call(this);
