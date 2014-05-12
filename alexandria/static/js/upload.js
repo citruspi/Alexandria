@@ -97,24 +97,25 @@ function displayResult (id) {
                 subtitle: i.volumeInfo.subtitle,
                 authors: i.volumeInfo.authors,
                 description: i.volumeInfo.description,
-                "cover": function () {
+                cover: function () {
                     var covers = i.volumeInfo.imageLinks;
-                    if (covers.extraLarge !== null && covers.extraLarge !== '') {
+                    console.log(covers);
+                    if (covers.extraLarge !== null && covers.extraLarge !== '' && typeof covers.extraLarge !== 'undefined') {
                         return covers.extraLarge;
                     }
-                    else if (covers.large !== null && covers.large !== '') {
+                    else if (covers.large !== null && covers.large !== '' && typeof covers.large !== 'undefined') {
                         return covers.large;
                     }
-                    else if (covers.medium !== null && covers.medium !== '') {
+                    else if (covers.medium !== null && covers.medium !== '' && typeof covers.medium !== 'undefined') {
                         return covers.medium;
                     }
-                    else if (covers.small !== null && covers.small !== '') {
+                    else if (covers.small !== null && covers.small !== '' && typeof covers.small !== 'undefined') {
                         return covers.small;
                     }
-                    else if (covers.thumbnail !== null && covers.thumbnail !== '') {
+                    else if (covers.thumbnail !== null && covers.thumbnail !== '' && typeof covers.thumbnail !== 'undefined') {
                         return covers.thumbnail;
                     }
-                    else if (covers.smallThumbnail !== null && covers.smallThumbnail !== '') {
+                    else if (covers.smallThumbnail !== null && covers.smallThumbnail !== '' && typeof covers.smallThumbnail !== 'undefined') {
                         return covers.smallThumbnail;
                     }
                     else {
