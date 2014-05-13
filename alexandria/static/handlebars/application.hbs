@@ -1,24 +1,24 @@
-<nav class="top-bar" data-topbar>
-    <ul class="title-area">
-        <li class="name">
-            <h1><a href="#">Alexandria</a></h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
-    </ul>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Alexandria</a>
+        </div>
 
-    <section class="top-bar-section">
-        <ul class="right">
-            <li class="divider"></li>
-            <li id="library_menu">{{#link-to 'library'}}<i class="fa fa-book"></i> &nbsp;Library{{/link-to}}</li>
-            <li class="divider"></li>
-            <li id="upload_menu"><a href="/upload"> <i class="fa fa-upload"></i> &nbsp;Upload</a></li>
-            <li class="divider"></li>
-            <li id="settings_menu"><a href="/preferences"> <i class="fa fa-cogs"></i> &nbsp;Preferences</a></li>
-            <li class="divider"></li>
-            <li><a href="/logout"> <i class="fa fa-power-off"></i> &nbsp;Sign Out</a></li>
-            <li class="divider"></li>
-        </ul>
-    </section>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>{{#link-to 'library'}}<i class="fa fa-book"></i> &nbsp;Library{{/link-to}}</li>
+                <li><a href="#"><i class="fa fa-upload"></i> &nbsp;Upload</a></li>
+                <li><a href="#"><i class="fa fa-cogs"></i> &nbsp;Preferences</a></li>
+                <li><a href="#">Sign Out</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
 {{outlet}}
