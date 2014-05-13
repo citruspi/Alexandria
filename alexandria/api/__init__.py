@@ -5,3 +5,4 @@ import book
 import upload
 import login
 import register
+import settings
