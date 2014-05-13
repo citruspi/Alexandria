@@ -1,185 +1,202 @@
-{% extends "base.html" %}
+<!doctype html>
+<html class="no-js" lang="en">
 
-{% block content %}
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Alexandria</title>
+        <link rel="stylesheet" href="/static/libs/foundation/foundation.min.css" />
+        <link rel="stylesheet" href="/static/libs/jquery-growl/jquery.growl.css" />
+        <link rel="stylesheet" href="/static/libs/quill/quill.snow.css" />
+        <link rel="stylesheet" href="/static/css/quill.css" />
+        <link rel="stylesheet" href="/static/css/animate.min.css" />
+        <link rel="stylesheet" href="/static/css/typeahead.css" />
+        <script src="/static/libs/foundation/vendor/modernizr.js"></script>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    </head>
 
-<div style="height:100%">
-<div id="forms">
+    <body>
 
-    <div class="row">
+        <div style="height:100%">
+        <div id="forms">
 
-        <div class="large-12 columns">
+            <div class="row">
 
-            <div data-alert class="alert-box radius" id="notification" style="display:none;">
-                <span id="message"></span>
+                <div class="large-12 columns">
+
+                    <div data-alert class="alert-box radius" id="notification" style="display:none;">
+                        <span id="message"></span>
+                    </div>
+
+                </div>
+
             </div>
 
-        </div>
+            {% if config['ALLOW_REGISTRATION'] %}
+            <div class="row">
 
-    </div>
+                <div class="large-4 columns">
+                    <h1><small>Login</small></h1>
+                </div>
 
-    {% if config['ALLOW_REGISTRATION'] %}
-    <div class="row">
+                <div class="large-4 columns">
+                    <h1><small>Register</small></h1>
+                </div>
 
-        <div class="large-4 columns">
-            <h1><small>Login</small></h1>
-        </div>
+                <div class="large-4 columns">
+                    <h1><small>Reset Password</small></h1>
+                </div>
 
-        <div class="large-4 columns">
-            <h1><small>Register</small></h1>
-        </div>
+            </div>
+            {% else %}
+            <div class="row">
 
-        <div class="large-4 columns">
-            <h1><small>Reset Password</small></h1>
-        </div>
+                <div class="large-4 large-offset-1 columns">
+                    <h1><small>Login</small></h1>
+                </div>
 
-    </div>
-    {% else %}
-    <div class="row">
+                <div class="large-4 large-offset-2 columns">
+                    <h1><small>Reset Password</small></h1>
+                </div>
 
-        <div class="large-4 large-offset-1 columns">
-            <h1><small>Login</small></h1>
-        </div>
+            </div>
+            {% endif %}
 
-        <div class="large-4 large-offset-2 columns">
-            <h1><small>Reset Password</small></h1>
-        </div>
+            {% if config['ALLOW_REGISTRATION'] %}
+            <div class="row">
 
-    </div>
-    {% endif %}
+                <div class="large-12 columns">
+                    <hr>
+                </div>
 
-    {% if config['ALLOW_REGISTRATION'] %}
-    <div class="row">
+            </div>
 
-        <div class="large-12 columns">
-            <hr>
-        </div>
+            {% else %}
 
-    </div>
+            <div class="row">
 
-    {% else %}
+                <div class="large-4 large-offset-1 columns">
+                    <hr>
+                </div>
 
-    <div class="row">
+                <div class="large-4 large-offset-2 columns">
+                    <hr>
+                </div>
 
-        <div class="large-4 large-offset-1 columns">
-            <hr>
-        </div>
+            </div>
 
-        <div class="large-4 large-offset-2 columns">
-            <hr>
-        </div>
+            {% endif %}
 
-    </div>
+            <div class="row">
 
-    {% endif %}
+                {% if config['ALLOW_REGISTRATION'] %}
+                <div class="large-4 columns">
+                {% else %}
+                <div class="large-4 large-offset-1 columns">
+                {% endif %}
 
-    <div class="row">
+                    <form name="login">
 
-        {% if config['ALLOW_REGISTRATION'] %}
-        <div class="large-4 columns">
-        {% else %}
-        <div class="large-4 large-offset-1 columns">
-        {% endif %}
+                        <div class="row">
 
-            <form name="login">
+                            <div class="large-12 columns">
+                                <label>Username</label>
+                                <input type="text" placeholder="marktwain" id="login-username" name="username"/>
+                            </div>
 
-                <div class="row">
+                            <div class="large-12 columns">
+                                <label>Password</label>
+                                <input name="password" id="login-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                            </div>
 
-                    <div class="large-12 columns">
-                        <label>Username</label>
-                        <input type="text" placeholder="marktwain" id="login-username" name="username"/>
-                    </div>
+                            <div class="large-12 columns">
+                                <a href="#" class="button postfix" id="login-submit">LOGIN</a>
+                            </div>
 
-                    <div class="large-12 columns">
-                        <label>Password</label>
-                        <input name="password" id="login-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
-                    </div>
+                        </div>
 
-                    <div class="large-12 columns">
-                        <a href="#" class="button postfix" id="login-submit">LOGIN</a>
-                    </div>
+                    </form>
 
                 </div>
 
-            </form>
+                {% if config['ALLOW_REGISTRATION'] %}
+                <div class="large-4 columns">
 
-        </div>
+                    <form name="register">
 
-        {% if config['ALLOW_REGISTRATION'] %}
-        <div class="large-4 columns">
+                        <div class="row">
 
-            <form name="register">
+                            <div class="large-12 columns">
+                                <label>Real Name</label>
+                                <input type="text" placeholder="Mark Twain" name="realname" id="register-realname"/>
+                            </div>
 
-                <div class="row">
+                            <div class="large-12 columns">
+                                <label>Username</label>
+                                <input type="text" placeholder="marktwain" name="username" id="register-username">
+                            </div>
 
-                    <div class="large-12 columns">
-                        <label>Real Name</label>
-                        <input type="text" placeholder="Mark Twain" name="realname" id="register-realname"/>
-                    </div>
+                            <div class="large-12 columns">
+                                <label>Email Address</label>
+                                <input type="text" placeholder="mark@twain.com" name="emailadd" id="register-emailadd">
+                            </div>
 
-                    <div class="large-12 columns">
-                        <label>Username</label>
-                        <input type="text" placeholder="marktwain" name="username" id="register-username">
-                    </div>
+                            <div class="large-12 columns">
+                                <label>Password</label>
+                                <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" name="password" id="register-password"/>
+                            </div>
 
-                    <div class="large-12 columns">
-                        <label>Email Address</label>
-                        <input type="text" placeholder="mark@twain.com" name="emailadd" id="register-emailadd">
-                    </div>
+                            <div class="large-12 columns">
+                                <a href="#" class="button postfix" id="register-submit">REGISTER</a>
+                            </div>
 
-                    <div class="large-12 columns">
-                        <label>Password</label>
-                        <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" name="password" id="register-password"/>
-                    </div>
+                        </div>
 
-                    <div class="large-12 columns">
-                        <a href="#" class="button postfix" id="register-submit">REGISTER</a>
-                    </div>
-
-                </div>
-
-            </form>
-
-        </div>
-
-        {% endif %}
-
-        {% if config['ALLOW_REGISTRATION'] %}
-        <div class="large-4 columns">
-        {% else %}
-        <div class="large-4 large-offset-2 columns">
-        {% endif %}
-
-            <form id="reset" action="/portal/reset" method="POST">
-
-                <div class="row">
-
-                    <div class="large-12 columns">
-                        <label>Username or Email Address</label>
-                        <input type="text" placeholder="marktwain" />
-                    </div>
-
-                    <div class="large-12 columns">
-                        <a href="#" class="button postfix">RESET PASSWORD</a>
-                    </div>
+                    </form>
 
                 </div>
 
-            </form>
+                {% endif %}
 
+                {% if config['ALLOW_REGISTRATION'] %}
+                <div class="large-4 columns">
+                {% else %}
+                <div class="large-4 large-offset-2 columns">
+                {% endif %}
+
+                    <form id="reset" action="/portal/reset" method="POST">
+
+                        <div class="row">
+
+                            <div class="large-12 columns">
+                                <label>Username or Email Address</label>
+                                <input type="text" placeholder="marktwain" />
+                            </div>
+
+                            <div class="large-12 columns">
+                                <a href="#" class="button postfix">RESET PASSWORD</a>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
         </div>
 
-    </div>
-</div>
-</div>
+        {% include "scripts.html" %}
 
-{% include "scripts.html" %}
+        <script src="/static/libs/flexverticalcenter/flexverticalcenter.js"></script>
+        <script src="/static/js/portal.js"></script>
+        <script type="text/javascript">
 
-<script src="/static/libs/flexverticalcenter/flexverticalcenter.js"></script>
-<script src="/static/js/portal.js"></script>
-<script type="text/javascript">
+            window.flexVerticalCenter(document.getElementById('forms'));
 
-    window.flexVerticalCenter(document.getElementById('forms'));
+        </script>
 
-</script>
+    </body>
 
-{% endblock %}
+</html>
