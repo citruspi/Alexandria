@@ -13,6 +13,10 @@ class RegisterView(FlaskView):
 
     def post(self):
 
+        if not app.config['ALLOW_REGISTRATION']:
+
+            return jsonify(error='Registration is currently disabled.'), 403
+
         username = request.form.get('username')
         realname = request.form.get('realname')
         emailadd = request.form.get('emailadd')

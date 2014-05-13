@@ -5,6 +5,8 @@ class Config(object):
     TEMP_DIR = 'tmp'
     LIB_DIR = 'books'
 
+    ALLOW_REGISTRATION = True
+
     MONGO = {
         'HOST' : 'localhost',
         'PORT' : 27017,

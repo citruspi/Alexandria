@@ -10,13 +10,14 @@
         <div class="large-12 columns">
 
             <div data-alert class="alert-box radius" id="notification" style="display:none;">
-                <span id="message">This is a success alert with a radius.</span>
+                <span id="message"></span>
             </div>
 
         </div>
 
     </div>
 
+    {% if config['ALLOW_REGISTRATION'] %}
     <div class="row">
 
         <div class="large-4 columns">
@@ -32,7 +33,21 @@
         </div>
 
     </div>
+    {% else %}
+    <div class="row">
 
+        <div class="large-4 large-offset-1 columns">
+            <h1><small>Login</small></h1>
+        </div>
+
+        <div class="large-4 large-offset-2 columns">
+            <h1><small>Reset Password</small></h1>
+        </div>
+
+    </div>
+    {% endif %}
+
+    {% if config['ALLOW_REGISTRATION'] %}
     <div class="row">
 
         <div class="large-12 columns">
@@ -41,9 +56,29 @@
 
     </div>
 
+    {% else %}
+
     <div class="row">
 
+        <div class="large-4 large-offset-1 columns">
+            <hr>
+        </div>
+
+        <div class="large-4 large-offset-2 columns">
+            <hr>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <div class="row">
+
+        {% if config['ALLOW_REGISTRATION'] %}
         <div class="large-4 columns">
+        {% else %}
+        <div class="large-4 large-offset-1 columns">
+        {% endif %}
 
             <form name="login">
 
@@ -69,6 +104,7 @@
 
         </div>
 
+        {% if config['ALLOW_REGISTRATION'] %}
         <div class="large-4 columns">
 
             <form name="register">
@@ -105,7 +141,13 @@
 
         </div>
 
+        {% endif %}
+
+        {% if config['ALLOW_REGISTRATION'] %}
         <div class="large-4 columns">
+        {% else %}
+        <div class="large-4 large-offset-2 columns">
+        {% endif %}
 
             <form id="reset" action="/portal/reset" method="POST">
 
