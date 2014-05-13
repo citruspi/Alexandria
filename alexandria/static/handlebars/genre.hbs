@@ -1,33 +1,27 @@
-<div class="row" style="height:2%"></div>
+<div class="container">
 
-<div class="row">
-
-    <div class="large-12 columns">
-
-        <ul class="breadcrumbs">
-            <li>{{#link-to 'library'}}Library{{/link-to}}</li>
-            <li class="unavailable"><a href="#">Genre</a></li>
-            <li class="current"><a href="#">{{ genre }}</a></li>
-        </ul>
-
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="/library">Library</a></li>
+                <li><a>Genres</a></li>
+                <li class="active">{{ genre }}</li>
+            </ol>
+        </div>
     </div>
 
-</div>
+    <div class="row">
 
-<div class="row">
-
-    <div class="large-12 columns">
-
-        <ul class="small-block-grid-5">
             {{#each books}}
-            <li>
-                <a class="th" href="#/book/{{unbound id}}">
-                    <img {{bind-attr src=cover}} width="100%"/>
-                </a>
-            </li>
+                <div class="col-lg-2">
+                {{#link-to 'book' this class="thumbnail"}}
+                    <img {{bind-attr src=cover}} style="width:100%;" >
+                {{/link-to}}
+                </div>
             {{/each}}
-        </ul>
+
+        </div>
 
     </div>
 
-</div>
+<div>
