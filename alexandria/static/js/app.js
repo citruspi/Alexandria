@@ -1,7 +1,8 @@
-['book', 'author', 'genre', 'library', 'application', 'edit'].forEach(function(template){
+['application', 'book', 'author', 'genre', 'library', 'edit'].forEach(function(template){
     $.ajax({
         url: '/static/handlebars/'+template+'.hbs',
         dataType: 'text',
+        async: false,
         success: function (response) {
             Ember.TEMPLATES[template] = Ember.Handlebars.compile(response);
         }
