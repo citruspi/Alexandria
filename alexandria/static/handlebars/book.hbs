@@ -1,0 +1,68 @@
+<div class="row" style="height:2%"></div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <ul class="breadcrumbs">
+            <li>{{#link-to 'library'}}Library{{/link-to}}</li>
+            <li class="unavailable"><a href="#">Books</a></li>
+            <li class="current"><a href="#">{{ title }}</a></li>
+        </ul>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="large-3 columns">
+
+        <a class="th">
+            <img {{bind-attr src=cover}} width="100%"/>
+        </a>
+
+        <br/><br/>
+
+        <dl>
+            <dt><i class="fa fa-download"></i> Downloads</dt>
+            <dd>
+                <ul class="button-group">
+                    {{#each formats}}
+                    <li><a href="/download/{{unbound ../id}}/{{unbound this}}" class="button small">{{ this }}</a></li>
+                    {{/each}}
+                </ul>
+            </dd>
+        </dl>
+
+        {{#link-to 'book.edit' this}}Edit{{/link-to}}
+
+    </div>
+
+    <div class="large-9 columns">
+
+        <h3>{{ title }}</h3>
+
+
+        <h4><i>{{ subtitle }}</i></h4>
+
+
+        <h5>By {{#each authors}}
+            <a href="#/author/{{unbound this}}">{{ this }}</a>
+        {{/each}}</h5>
+
+        <br>
+
+        <dl>
+            <dt>Description</dt>
+            <dd>{{{ description }}}</dd>
+        </dl>
+
+        <dl>
+            <dt>Genres</dt>
+            <dd><ul class="inline-list">{{#each genres}}<li><a href="#/genre/{{unbound this}}">{{ this }}</a></li>{{/each}}</ul></dd>
+        </dl>
+
+    </div>
+
+</div>

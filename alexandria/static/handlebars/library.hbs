@@ -1,0 +1,28 @@
+<div class="row" style="height:2%"></div>
+
+<div class="row">
+    <div class="large-12 columns">
+        <ul class="breadcrumbs">
+            <li><a href="/library">Library</a></li>
+            <li class="current"><a href="#">All</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <ul class="small-block-grid-5">
+            {{#each}}
+            <li>
+                {{#link-to 'book' this class="th"}}
+                    <img {{bind-attr src=cover}} width="100%"/>
+                {{/link-to}}
+            </li>
+            {{/each}}
+        </ul>
+
+    </div>
+
+</div>

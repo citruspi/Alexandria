@@ -1,0 +1,33 @@
+<div class="row" style="height:2%"></div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <ul class="breadcrumbs">
+            <li>{{#link-to 'library'}}Library{{/link-to}}</li>
+            <li class="unavailable"><a href="#">Author</a></li>
+            <li class="current"><a href="#">{{ author }}</a></li>
+        </ul>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="large-12 columns">
+
+        <ul class="small-block-grid-5">
+            {{#each books}}
+            <li>
+                <a class="th" href="#/book/{{unbound id}}">
+                    <img {{bind-attr src=cover}} width="100%"/>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+
+    </div>
+
+</div>
