@@ -7,6 +7,18 @@
 
     <div class="row">
 
+        <div class="large-12 columns">
+
+            <div data-alert class="alert-box radius" id="notification" style="display:none;">
+                <span id="message">This is a success alert with a radius.</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
         <div class="large-4 columns">
             <h1><small>Login</small></h1>
         </div>
@@ -33,22 +45,22 @@
 
         <div class="large-4 columns">
 
-            <form id="login" action="/portal/login" method="POST">
+            <form name="login">
 
                 <div class="row">
 
                     <div class="large-12 columns">
                         <label>Username</label>
-                        <input type="text" placeholder="marktwain" name="username"/>
+                        <input type="text" placeholder="marktwain" id="login-username" name="username"/>
                     </div>
 
                     <div class="large-12 columns">
                         <label>Password</label>
-                        <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" name="password"/>
+                        <input id="login-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" name="password" />
                     </div>
 
                     <div class="large-12 columns">
-                        <a href="#" class="button postfix" onclick="document.getElementById('login').submit();">LOGIN</a>
+                        <a href="#" class="button postfix" id="login-submit">LOGIN</a>
                     </div>
 
                 </div>
@@ -121,7 +133,7 @@
 {% include "scripts.html" %}
 
 <script src="/static/libs/flexverticalcenter/flexverticalcenter.js"></script>
-
+<script src="/static/js/portal.js"></script>
 <script type="text/javascript">
 
     window.flexVerticalCenter(document.getElementById('forms'));

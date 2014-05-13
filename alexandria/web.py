@@ -78,37 +78,6 @@ def register():
 
         return 'Please fill out all the fields.'
 
-@app.route('/portal/login', methods=['POST'])
-def login():
-
-    if (request.form.get('username') and
-        request.form.get('password')):
-
-        query = mongo.Users.find_one({'username': request.form.get('username')})
-
-        if query is not None:
-
-            if bcrypt.hashpw(request.form.get('password').encode('utf-8'), query['password'].encode('utf8')) == query['password']:
-
-                session['username'] = request.form.get('username')
-                session['role'] = query['role']
-                session['realname'] = query['realname']
-
-                return redirect(url_for('index'))
-
-            else:
-
-                return 'Incorrect login.'
-
-        else:
-
-            return 'Username not registered.'
-
-    else:
-
-        return 'Please fill out all the fields.'
-
-
 @app.route('/logout')
 def logout():
 
