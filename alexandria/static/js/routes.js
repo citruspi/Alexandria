@@ -34,6 +34,15 @@ App.LibraryRoute = Ember.Route.extend({
     }
 });
 
+App.SettingsRoute = Ember.Route.extend({
+    model: function(){
+        return Ember.$.getJSON('/api/settings/').then(function(data) {
+            return data.settings;
+            console.log(data);
+        });
+    }
+});
+
 App.AuthorRoute = Ember.Route.extend({
     model: function(params){
         return Ember.$.getJSON('/api/books/author/'+params.author_id).then(function(data) {

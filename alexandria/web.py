@@ -37,43 +37,6 @@ def logout():
 
     return redirect(url_for('index'))
 
-
-@app.route('/preferences', methods=['GET', 'POST'])
-@authenticated
-@administrator
-def settings():
-
-    if request.method == 'GET':
-
-        return render_template('preferences.html', preferences=mongo.Users.find_one({'username': session.get('username')})['preferences'])
-
-    elif request.method == 'POST':
-
-        user = mongo.Users.find_one({'username': session.get('username')})
-
-        authorized = request.form.get('authorized').split('\r\n')
-
-        user['preferences']['authorized'] = []
-
-        for auth in authorized:
-
-            if auth != '':
-
-                user['preferences']['authorized'].append(auth)
-
-        if len(request.form.getlist('confirm')) > 0:
-
-            user['preferences']['confirm'] = True
-
-        else:
-
-            user['preferences']['confirm'] = False
-
-        mongo.Users.update({'_id':user['_id']}, user, True)
-
-        return ''
-
-
 @app.route('/download/<id>/<format>')
 @authenticated
 def download(id, format):

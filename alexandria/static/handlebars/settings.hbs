@@ -1,0 +1,41 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-8 col-md-offset-2">
+
+            <div id="success" style="display:none;">
+                <div class="alert alert-success">Settings successfully saved!</div>
+            </div>
+
+            <div id="failure" style="display:none;">
+                <div class="alert alert-danger">There was a problem saving your settings!</div>
+            </div>
+
+            <h3>Settings</h3>
+            <hr>
+
+            <form role="form" {{action "save" on="submit"}}>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Full Name</label>
+                    {{input value=realname class="form-control" type="text"}}
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email Address</label>
+                    {{input value=emailadd class="form-control" type="text"}}
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Password</label>
+                    {{input value=password class="form-control" type="password"}}
+                </div>
+
+                <button type="submit" class="btn btn-primary pull-right">Save Settings</button>
+
+            </form>
+
+    </div>
+
+</div>
