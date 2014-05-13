@@ -7,7 +7,7 @@ window.login = function(){
         $('#notification').addClass('success');
         $('#notification').show();
         setTimeout(function(){
-            window.location = '/library';
+            window.location = '/';
         }, 500);
     })
     .fail(function(data){
