@@ -1,6 +1,7 @@
 <html>
 
     <head>
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Alexandria</title>
@@ -12,94 +13,17 @@
         <link rel="stylesheet" href="/static/css/typeahead.css" />
         <script src="/static/libs/foundation/vendor/modernizr.js"></script>
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        
     </head>
     <body>
-
-        {% raw %}
 
         <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
         <script src="//builds.emberjs.com/handlebars-1.0.0.js"></script>
         <script src="http://builds.emberjs.com/release/ember.js"></script>
         <script src="//builds.emberjs.com/tags/v1.0.0-beta.7/ember-data.js"></script>
-        <script>
+        <script src="/static/js/app.js"></script>
+        <script src="/static/js/routes.js"></script>
 
-            ['book', 'author', 'genre', 'library', 'application'].forEach(function(template){
-                $.ajax({
-                    url: '/static/handlebars/'+template+'.hbs',
-                    dataType: 'text',
-                    success: function (response) {
-                        Ember.TEMPLATES[template] = Ember.Handlebars.compile(response);
-                    }
-                });
-            });
-
-            var App = Ember.Application.create({
-                LOG_TRANSITIONS: true,
-                LOG_BINDINGS: true,
-                LOG_VIEW_LOOKUPS: true,
-                LOG_STACKTRACE_ON_DEPRECATION: true,
-                LOG_VERSION: true,
-                debugMode: true
-            });
-
-            App.Router.map(function () {
-                this.resource('library');
-                this.resource('book', { path: '/book/:book_id' }, function() {
-                    this.route('edit');
-                });
-                this.resource('genre', { path: '/genre/:genre_id' });
-                this.resource('author', { path: '/author/:author_id' });
-            });
-
-            App.IndexRoute = Ember.Route.extend({
-                beforeModel: function() {
-                    this.transitionTo('library');
-                }
-            });
-
-            App.BookRoute = Ember.Route.extend({
-                model: function(params) {
-                    return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
-                        console.log(data.book);
-                        return data.book;
-                    });
-                }
-            });
-
-            App.LibraryRoute = Ember.Route.extend({
-                model: function(){
-                    return Ember.$.getJSON('/api/books/').then(function(data) {
-                        return data.books;
-                    });
-                }
-            });
-
-            App.AuthorRoute = Ember.Route.extend({
-                model: function(params){
-                    return Ember.$.getJSON('/api/books/author/'+params.author_id).then(function(data) {
-                        return {
-                            books: data.books,
-                            author: params.author_id
-                        }
-                    });
-                }
-            });
-
-            App.GenreRoute = Ember.Route.extend({
-                model: function(params){
-                    return Ember.$.getJSON('/api/books/genre/'+params.genre_id).then(function(data) {
-                        return {
-                            books: data.books,
-                            genre: params.genre_id
-                        }
-                    });
-                }
-            });
-
-
-        </script>
-
-        {% endraw %}
     </body>
 
 </html>
