@@ -10,15 +10,11 @@ import bcrypt
 from bson.objectid import ObjectId
 
 @app.route('/', methods=['GET'])
+@authenticated
 def index():
 
-    if session.get('username'):
+    return render_template('app.html')
 
-        return redirect(url_for('library'))
-
-    else:
-
-        return redirect(url_for('portal'))
 
 @app.route('/portal')
 def portal():
@@ -31,6 +27,7 @@ def portal():
 
         return render_template('index.html')
 
+
 @app.route('/logout')
 def logout():
 
@@ -39,6 +36,7 @@ def logout():
     session.pop('realname', None)
 
     return redirect(url_for('index'))
+
 
 @app.route('/preferences', methods=['GET', 'POST'])
 @authenticated
@@ -75,22 +73,6 @@ def settings():
 
         return ''
 
-@app.route('/library', defaults={'page': 1})
-@app.route('/library/<int:page>')
-@authenticated
-@not_even_one
-def library(page):
-
-    perpage = 10
-
-    books = mongo.Books.find().skip((page-1)*perpage).limit(perpage)
-    cap = mongo.Books.count() / perpage
-
-    if mongo.Books.count() % perpage > 0:
-
-        cap += 1
-
-    return render_template('library.html', books=books, page=page, cap=cap)
 
 @app.route('/download/<id>/<format>')
 @authenticated
@@ -103,39 +85,6 @@ def download(id, format):
 
     return response
 
-@app.route('/genre/<genre>', defaults={'page': 1})
-@app.route('/genre/<genre>/<int:page>')
-@authenticated
-@not_even_one
-def bygenre(genre, page):
-
-    perpage = 10
-
-    books = mongo.Books.find({'genres':genre}).skip((page-1)*perpage).limit(perpage)
-    cap = mongo.Books.find({'genres':genre}).count() / perpage
-
-    if mongo.Books.count() % perpage > 0:
-
-        cap += 1
-
-    return render_template('library.html', books=books, page=page, cap=cap)
-
-@app.route('/author/<author>', defaults={'page': 1})
-@app.route('/author/<author>/<int:page>')
-@authenticated
-@not_even_one
-def byauthor(author, page):
-
-    perpage = 10
-
-    books = mongo.Books.find({'authors':author}).skip((page-1)*perpage).limit(perpage)
-    cap = mongo.Books.find({'authors':author}).count() / perpage
-
-    if mongo.Books.count() % perpage > 0:
-
-        cap += 1
-
-    return render_template('library.html', books=books, page=page, cap=cap)
 
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 @authenticated
@@ -171,13 +120,6 @@ def edit(id):
 
         return ''
 
-@app.route('/book/<id>')
-@authenticated
-def book(id):
-
-    books = mongo.Books.find({"id": id})
-
-    return render_template('book.html', book=books[0])
 
 @app.route('/upload')
 @authenticated

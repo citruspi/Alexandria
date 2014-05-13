@@ -1,0 +1,306 @@
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Alexandria</title>
+        <link rel="stylesheet" href="/static/libs/foundation/foundation.min.css" />
+        <link rel="stylesheet" href="/static/libs/jquery-growl/jquery.growl.css" />
+        <link rel="stylesheet" href="/static/libs/quill/quill.snow.css" />
+        <link rel="stylesheet" href="/static/css/quill.css" />
+        <link rel="stylesheet" href="/static/css/animate.min.css" />
+        <link rel="stylesheet" href="/static/css/typeahead.css" />
+        <script src="/static/libs/foundation/vendor/modernizr.js"></script>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    </head>
+    <body>
+
+        {% raw %}
+
+        <script type="text/x-handlebars" id="application">
+
+            <nav class="top-bar" data-topbar>
+                <ul class="title-area">
+                    <li class="name">
+                        <h1><a href="#">Alexandria</a></h1>
+                    </li>
+                    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+                </ul>
+
+                <section class="top-bar-section">
+                    <ul class="right">
+                        <li class="divider"></li>
+                        <li id="library_menu">{{#link-to 'library'}}<i class="fa fa-book"></i> &nbsp;Library{{/link-to}}</li>
+                        <li class="divider"></li>
+                        <li id="upload_menu"><a href="/upload"> <i class="fa fa-upload"></i> &nbsp;Upload</a></li>
+                        <li class="divider"></li>
+                        <li id="settings_menu"><a href="/preferences"> <i class="fa fa-cogs"></i> &nbsp;Preferences</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/logout"> <i class="fa fa-power-off"></i> &nbsp;Sign Out</a></li>
+                        <li class="divider"></li>
+                    </ul>
+                </section>
+            </nav>
+
+            {{outlet}}
+
+        </script>
+
+        <script type="text/x-handlebars" id="library">
+
+            <div class="row" style="height:2%"></div>
+
+            <div class="row">
+                <div class="large-12 columns">
+                    <ul class="breadcrumbs">
+                        <li><a href="/library">Library</a></li>
+                        <li class="current"><a href="#">All</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="large-12 columns">
+
+                    <ul class="small-block-grid-5">
+                        {{#each}}
+                        <li>
+                            {{#link-to 'book' this class="th"}}
+                                <img {{bind-attr src=cover}} width="100%"/>
+                            {{/link-to}}
+                        </li>
+                        {{/each}}
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </script>
+
+        <script type="text/x-handlebars" id="genre">
+
+            <div class="row" style="height:2%"></div>
+
+            <div class="row">
+
+                <div class="large-12 columns">
+
+                    <ul class="breadcrumbs">
+                        <li>{{#link-to 'library'}}Library{{/link-to}}</li>
+                        <li class="unavailable"><a href="#">Genre</a></li>
+                        <li class="current"><a href="#">{{ genre }}</a></li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="large-12 columns">
+
+                    <ul class="small-block-grid-5">
+                        {{#each books}}
+                        <li>
+                            <a class="th" href="#/book/{{unbound id}}">
+                                <img {{bind-attr src=cover}} width="100%"/>
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </script>
+
+        <script type="text/x-handlebars" id="author">
+
+            <div class="row" style="height:2%"></div>
+
+            <div class="row">
+
+                <div class="large-12 columns">
+
+                    <ul class="breadcrumbs">
+                        <li>{{#link-to 'library'}}Library{{/link-to}}</li>
+                        <li class="unavailable"><a href="#">Author</a></li>
+                        <li class="current"><a href="#">{{ author }}</a></li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="large-12 columns">
+
+                    <ul class="small-block-grid-5">
+                        {{#each books}}
+                        <li>
+                            <a class="th" href="#/book/{{unbound id}}">
+                                <img {{bind-attr src=cover}} width="100%"/>
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </script>
+
+        <script type="text/x-handlebars" id="book">
+
+
+            <div class="row" style="height:2%"></div>
+
+            <div class="row">
+
+                <div class="large-12 columns">
+
+                    <ul class="breadcrumbs">
+                        <li>{{#link-to 'library'}}Library{{/link-to}}</li>
+                        <li class="unavailable"><a href="#">Books</a></li>
+                        <li class="current"><a href="#">{{ title }}</a></li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="large-3 columns">
+
+                    <a class="th">
+                        <img {{bind-attr src=cover}} width="100%"/>
+                    </a>
+
+                    <br/><br/>
+
+                    <dl>
+                        <dt><i class="fa fa-download"></i> Downloads</dt>
+                        <dd>
+                            <ul class="button-group">
+                                {{#each formats}}
+                                <li><a href="/download/{{unbound ../id}}/{{unbound this}}" class="button small">{{ this }}</a></li>
+                                {{/each}}
+                            </ul>
+                        </dd>
+                    </dl>
+
+                    {{#link-to 'book.edit' this}}Edit{{/link-to}}
+
+                </div>
+
+                <div class="large-9 columns">
+
+                    <h3>{{ title }}</h3>
+
+
+                    <h4><i>{{ subtitle }}</i></h4>
+
+
+                    <h5>By {{#each authors}}
+                        <a href="#/author/{{unbound this}}">{{ this }}</a>
+                    {{/each}}</h5>
+
+                    <br>
+
+                    <dl>
+                        <dt>Description</dt>
+                        <dd>{{{ description }}}</dd>
+                    </dl>
+
+                    <dl>
+                        <dt>Genres</dt>
+                        <dd><ul class="inline-list">{{#each genres}}<li><a href="#/genre/{{unbound this}}">{{ this }}</a></li>{{/each}}</ul></dd>
+                    </dl>
+
+                </div>
+
+            </div>
+        </script>
+
+        <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="//builds.emberjs.com/handlebars-1.0.0.js"></script>
+        <script src="http://builds.emberjs.com/release/ember.js"></script>
+        <script src="//builds.emberjs.com/tags/v1.0.0-beta.7/ember-data.js"></script>
+        <script>
+
+            var App = Ember.Application.create({
+                LOG_TRANSITIONS: true,
+                LOG_BINDINGS: true,
+                LOG_VIEW_LOOKUPS: true,
+                LOG_STACKTRACE_ON_DEPRECATION: true,
+                LOG_VERSION: true,
+                debugMode: true
+            });
+
+            App.Router.map(function () {
+                this.resource('library');
+                this.resource('book', { path: '/book/:book_id' }, function() {
+                    this.route('edit');
+                });
+                this.resource('genre', { path: '/genre/:genre_id' });
+                this.resource('author', { path: '/author/:author_id' });
+            });
+
+            App.IndexRoute = Ember.Route.extend({
+                beforeModel: function() {
+                    this.transitionTo('library');
+                }
+            });
+
+            App.BookRoute = Ember.Route.extend({
+                model: function(params) {
+                    return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
+                        console.log(data.book);
+                        return data.book;
+                    });
+                }
+            });
+
+            App.LibraryRoute = Ember.Route.extend({
+                model: function(){
+                    return Ember.$.getJSON('/api/books/').then(function(data) {
+                        return data.books;
+                    });
+                }
+            });
+
+            App.AuthorRoute = Ember.Route.extend({
+                model: function(params){
+                    return Ember.$.getJSON('/api/books/author/'+params.author_id).then(function(data) {
+                        return {
+                            books: data.books,
+                            author: params.author_id
+                        }
+                    });
+                }
+            });
+
+            App.GenreRoute = Ember.Route.extend({
+                model: function(params){
+                    return Ember.$.getJSON('/api/books/genre/'+params.genre_id).then(function(data) {
+                        return {
+                            books: data.books,
+                            genre: params.genre_id
+                        }
+                    });
+                }
+            });
+
+
+        </script>
+
+        {% endraw %}
+    </body>
+
+</html>
