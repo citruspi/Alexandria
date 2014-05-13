@@ -4,3 +4,4 @@ import books
 import book
 import upload
 import login
+import register

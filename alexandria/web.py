@@ -31,53 +31,6 @@ def portal():
 
         return render_template('index.html')
 
-@app.route('/portal/register', methods=['POST'])
-def register():
-
-    if (request.form.get('username') and
-        request.form.get('realname') and
-        request.form.get('emailadd') and
-        request.form.get('password')):
-
-        emailadd = mongo.Users.find_one({'email_address': request.form.get('emailadd')})
-        username = mongo.Users.find_one({'username': request.form.get('username')})
-
-        if (emailadd is None) and (username is None):
-
-            role = 1
-
-            if mongo.Users.find_one() is None:
-
-                role = 0
-
-            mongo.Users.insert({
-                'username' : request.form.get('username'),
-                'realname' : request.form.get('realname'),
-                'email_address' : request.form.get('emailadd'),
-                'password' : bcrypt.hashpw(request.form.get('password').encode('utf-8'), bcrypt.gensalt()),
-                'role' : role,
-                'preferences' : {
-                    'confirm' : True,
-                    'authorized' : []
-                }
-            })
-
-            return 'Registration completed successfully.'
-
-        else:
-
-            if emailadd is not None:
-
-                return 'Email address already registered.'
-
-            elif username is not None:
-
-                return 'Username is already registered.'
-
-    else:
-
-        return 'Please fill out all the fields.'
-
 @app.route('/logout')
 def logout():
 
