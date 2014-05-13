@@ -86,41 +86,6 @@ def download(id, format):
     return response
 
 
-@app.route('/edit/<id>', methods=['GET', 'POST'])
-@authenticated
-@administrator
-def edit(id):
-
-    book = mongo.Books.find({"id": id})[0]
-
-    if request.method == 'GET':
-
-        return render_template('edit.html', book=book)
-
-    elif request.method == 'POST':
-
-        book['title'] = request.form.get('title')
-        book['subtitle'] = request.form.get('subtitle')
-
-        authors = request.form.get('authors').split('\r\n')
-
-        book['authors'] = []
-
-        for author in authors:
-
-            if author != '':
-
-                book['authors'].append(author)
-
-        book['cover'] = request.form.get('cover')
-        book['description'] = request.form.get('description')
-        book['genres'] = request.form.getlist('genres')
-
-        mongo.Books.update({'_id':book['_id']}, book, True)
-
-        return ''
-
-
 @app.route('/upload')
 @authenticated
 @administrator

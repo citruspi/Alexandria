@@ -13,6 +13,19 @@ App.BookRoute = Ember.Route.extend({
     }
 });
 
+App.EditRoute = Ember.Route.extend({
+    beforeModel: function(params) {
+        $.getScript('/static/js/edit.js');
+    },
+    model: function(params) {
+        return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
+            console.log(data.book);
+            return data.book;
+        });
+    }
+});
+
+
 App.LibraryRoute = Ember.Route.extend({
     model: function(){
         return Ember.$.getJSON('/api/books/').then(function(data) {

@@ -1,4 +1,4 @@
-['book', 'author', 'genre', 'library', 'application'].forEach(function(template){
+['book', 'author', 'genre', 'library', 'application', 'edit'].forEach(function(template){
     $.ajax({
         url: '/static/handlebars/'+template+'.hbs',
         dataType: 'text',
@@ -19,9 +19,8 @@ var App = Ember.Application.create({
 
 App.Router.map(function () {
     this.resource('library');
-    this.resource('book', { path: '/book/:book_id' }, function() {
-        this.route('edit');
-    });
+    this.resource('book', { path: '/book/:book_id' });
+    this.resource('edit', { path: '/edit/:book_id' });
     this.resource('genre', { path: '/genre/:genre_id' });
     this.resource('author', { path: '/author/:author_id' });
 });

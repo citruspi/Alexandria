@@ -1,4 +1,4 @@
-function save(){
+$('#save').bind('click', function(){
 
     var description = document.createElement('input');
     description.type = "hidden";
@@ -6,7 +6,7 @@ function save(){
     description.value = window.descriptionEditor.getHTML();
     document.forms.edit.appendChild(description);
 
-    $.post("/edit/"+window.id, $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
+    $.post("/api/book/"+window.id, $( document.forms.edit ).serialize(), function(data, textStatus, jqXHR){
         $.growl.notice({
             title: "Success!",
             message: "Edit saved!"
@@ -21,9 +21,9 @@ function save(){
 
     document.forms.edit.removeChild(document.getElementsByName("description")[0]);
 
-}
+});
 
-(function() {
+function loadEditor(){
 
   var descriptionEditor, cursorManager;
 
@@ -40,4 +40,4 @@ function save(){
 
   window.descriptionEditor = descriptionEditor;
 
-}).call(this);
+}

@@ -20,5 +20,19 @@ class BookView(FlaskView):
 
         return jsonify(book=book)
 
+    @authenticated
+    def post(self, id):
+
+        book = mongo.Books.find({"id": id})[0]
+
+        book['title'] = request.form.get('title')
+        book['subtitle'] = request.form.get('subtitle')
+
+        book['cover'] = request.form.get('cover')
+        book['description'] = request.form.get('description')
+
+        mongo.Books.update({'_id':book['_id']}, book, True)
+
+        return ''
 
 BookView.register(app)
