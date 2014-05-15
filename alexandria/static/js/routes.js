@@ -46,6 +46,10 @@ App.SettingsRoute = Ember.Route.extend({
             return data.settings;
             console.log(data);
         });
+    },
+    setupController: function(controller, model) {
+        controller.set('realname', model.realname);
+        controller.set('emailadd', model.email_address);
     }
 });
 
