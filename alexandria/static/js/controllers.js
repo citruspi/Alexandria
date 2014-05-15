@@ -38,7 +38,7 @@ App.EditController = Ember.Controller.extend({
                 title: this.get('title'),
                 subtitle: this.get('subtitle'),
                 cover: this.get('cover'),
-                description: this.get('description'),
+                description:  $('#description').code(),
                 authors: function() {
 
                     var table = document.getElementById('authors').getElementsByTagName('tbody')[0];

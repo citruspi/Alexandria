@@ -119,14 +119,13 @@
     </div>
 
     <br>
-    
+
     <div class="row">
 
         <div class="col-lg-12">
 
             <label>Description</label>
-
-            {{textarea value=description class="form-control" rows="3"}}
+            <div id="description"></div>
 
         </div>
 
@@ -173,5 +172,16 @@
         </form>
 
     </div>
+
+    <script type="text/javascript">
+        $('#description').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strike']],
+                ['para', ['ul', 'ol']],
+                ['insert', ['link', 'picture']]
+            ]
+         });
+    </script>
 
 </div>
