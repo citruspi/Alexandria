@@ -114,22 +114,4 @@
 
     </div>
 
-    <script type="text/javascript">
-        $('#description').summernote({
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strike']],
-                ['para', ['ul', 'ol']],
-                ['insert', ['link', 'picture']]
-            ]
-         });
-         $(".tm-input").tagsManager();
-         var genreTags = $("#genres").tagsManager({
-             prefilled: "{{unbound genres}}",
-         });
-         var authorTags = $("#authors").tagsManager({
-             prefilled: "{{unbound authors}}",
-         });
-    </script>
-
 </div>
