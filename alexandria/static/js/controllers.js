@@ -40,21 +40,10 @@ App.EditController = Ember.Controller.extend({
                 cover: this.get('cover'),
                 description:  $('#description').code(),
                 authors: function() {
-
-                    var table = document.getElementById('authors').getElementsByTagName('tbody')[0];
-
-                    authors = [];
-
-                    for(var i=0; i<table.rows.length;i++){
-                        authors.push(table.rows[i].cells[0].innerHTML);
-                    }
-
-                    return authors;
+                    return $("#authors").tagsManager('tags');
                 },
                 genres: function(){
-                    tags = $("#genres").tagsManager('tags');
-                    console.log(tags);
-                    return tags;
+                    return $("#genres").tagsManager('tags');
                 }
             }).then(function(){
                 $('#feedback').hide();

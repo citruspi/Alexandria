@@ -24,7 +24,7 @@ App.EditRoute = Ember.Route.extend({
         controller.set('id', model.id);
         controller.set('title', model.title);
         controller.set('subtitle', model.subtitle);
-        controller.set('authors', model.authors);
+        controller.set('authors', model.authors.join(','));
         controller.set('description', model.description);
         controller.set('cover', model.cover);
         controller.set('genres', model.genres.join(','));

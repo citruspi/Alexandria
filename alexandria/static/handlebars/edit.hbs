@@ -48,42 +48,25 @@
 
     <div class="row">
 
-        <form {{action "addAuthor" on="submit"}}>
+        <div class="col-lg-6">
 
-            <div class="col-lg-4">
+            <label>Authors</label>
 
-                    <div class="form-group">
-                            {{input value=author class="form-control" type="text" placeholder="Mark Twain"}}
-                    </div>
+            <form class="form-inline">
+                <input class="form-control" type="text" id="authors" class="tm-input" placeholder="Stephen King">
+            </form>
 
+        </div>
 
-            </div>
+        <div class="col-lg-6">
 
-            <div class="col-lg-2">
+            <label>Genres</label>
 
-                    <button class="btn" style="width:100;">Add Author</author>
+            <form class="form-inline">
+                <input class="form-control" type="text" id="genres" class="tm-input" placeholder="Young Adult">
+            </form>
 
-            </div>
-
-            <div class="col-lg-6">
-
-                <table class="table table-striped" id="authors">
-                        <thead>
-                            <tr>
-                                <td><strong>Authors</strong></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {{#each authors}}
-                        <tr>
-                            <td>{{ this }}</td>
-                        </tr>
-                        {{/each}}
-                        </tbody>
-                    </table>
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
@@ -131,22 +114,6 @@
 
     </div>
 
-    <br>
-
-    <div class="row">
-
-        <div class="col-lg-6">
-
-            <label>Genres</label>
-
-            <form class="form-inline">
-                <input class="form-control" type="text" id="genres" class="tm-input" placeholder="Young Adult">
-            </form>
-
-        </div>
-
-    </div>
-
     <script type="text/javascript">
         $('#description').summernote({
             toolbar: [
@@ -159,6 +126,9 @@
          $(".tm-input").tagsManager();
          var genreTags = $("#genres").tagsManager({
              prefilled: "{{unbound genres}}",
+         });
+         var authorTags = $("#authors").tagsManager({
+             prefilled: "{{unbound authors}}",
          });
     </script>
 
