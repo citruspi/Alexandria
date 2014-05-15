@@ -1,87 +1,65 @@
-window.login = function(){
-    $.post("/api/portal/login/", $( document.forms.login ).serialize(), function(data, textStatus, jqXHR){
-        $('#notification').hide();
-        $('#message').html(data.success);
-        $('#notification').removeClass();
-        $('#notification').addClass('alert-box');
-        $('#notification').addClass('success');
-        $('#notification').show();
-        setTimeout(function(){
-            window.location = '/';
-        }, 500);
-    })
-    .fail(function(data){
-        $('#notification').hide();
-        $('#message').html(data.responseJSON.error);
-        $('#notification').removeClass();
-        $('#notification').addClass('alert-box');
-        $('#notification').addClass('alert');
-        $('#notification').show();
-    });
-}
-
-$('#login-submit').bind('click', function(){
-    window.login();
-});
-
-$('#login-username').keypress(function (e) {
-    if (e.which == 13) {
-        window.login();
+$.ajax({
+    url: '/static/handlebars/portal.hbs',
+    dataType: 'text',
+    async: false,
+    success: function (response) {
+        Ember.TEMPLATES['portal'] = Ember.Handlebars.compile(response);
     }
 });
 
-$('#login-password').keypress(function (e) {
-    if (e.which == 13) {
-        window.login();
-    }
+var App = Ember.Application.create({
+    LOG_TRANSITIONS: true,
+    LOG_BINDINGS: true,
+    LOG_VIEW_LOOKUPS: true,
+    LOG_STACKTRACE_ON_DEPRECATION: true,
+    LOG_VERSION: true,
+    debugMode: true
 });
 
-window.register = function(){
-    $.post("/api/portal/register/", $( document.forms.register ).serialize(), function(data, textStatus, jqXHR){
-        console.log(1);
-        $('#notification').hide();
-        $('#message').html(data.success);
-        $('#notification').removeClass();
-        $('#notification').addClass('alert-box');
-        $('#notification').addClass('success');
-        $('#notification').show();
-    })
-    .fail(function(data){
-        console.log(data);
-        $('#notification').hide();
-        $('#message').html(data.responseJSON.error);
-        $('#notification').removeClass();
-        $('#notification').addClass('alert-box');
-        $('#notification').addClass('alert');
-        $('#notification').show();
-    });
-}
-
-$('#register-submit').bind('click', function(){
-    console.log('hello');
-    window.register();
+App.Router.map(function () {
+    this.resource('portal', { path: '/' });
 });
 
-$('#register-realname').keypress(function (e) {
-    if (e.which == 13) {
-        window.register();
-    }
-});
-
-$('#register-username').keypress(function (e) {
-    if (e.which == 13) {
-        window.register();
-    }
-});
-
-$('#register-emailadd').keypress(function (e) {
-    if (e.which == 13) {
-        window.register();
-    }
-});
-
-$('#register-password').keypress(function (e) {
-    if (e.which == 13) {
-        window.register();
+App.PortalController = Ember.Controller.extend({
+    actions: {
+        login: function() {
+            console.log('helo');
+            $.post('/api/portal/login/', {
+                username: this.get('l_username'),
+                password: this.get('l_password')
+            }).then(function(){
+                $('#feedback').hide();
+                window.location = '/';
+            }, function(){
+                $('#feedback').hide();
+                $('#feedback').html('There was problem logging you in.');
+                $('#feedback').removeClass();
+                $('#feedback').addClass('alert');
+                $('#feedback').addClass('alert-danger');
+                $('#feedback').show();
+            });
+        },
+        register: function() {
+            $.post('/api/portal/register/', {
+                realname: this.get('n_realname'),
+                username: this.get('n_username'),
+                emailadd: this.get('n_emailadd'),
+                password: this.get('n_password')
+            }).then(function(){
+                $('#feedback').hide();
+                $('#feedback').html('Your account was successfully registerd.');
+                $('#feedback').removeClass();
+                $('#feedback').addClass('alert');
+                $('#feedback').addClass('alert-success');
+                $('#feedback').show();
+            }, function(){
+                $('#feedback').hide();
+                $('#feedback').html('There was problem registering your account.');
+                $('#feedback').removeClass();
+                $('#feedback').addClass('alert');
+                $('#feedback').addClass('alert-danger');
+                $('#feedback').show();
+            });
+        }
     }
 });
