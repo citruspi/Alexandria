@@ -31,6 +31,9 @@ class BookView(FlaskView):
         book['cover'] = request.form.get('cover')
         book['description'] = request.form.get('description')
 
+        book['authors'] = request.form.get('authors').split(',')
+        book['genres'] = request.form.get('genres').split(',')
+
         mongo.Books.update({'_id':book['_id']}, book, True)
 
         return ''

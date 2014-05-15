@@ -14,11 +14,9 @@ App.BookRoute = Ember.Route.extend({
 });
 
 App.EditRoute = Ember.Route.extend({
-    beforeModel: function(params) {
-        $.getScript('/static/js/edit.js');
-    },
     model: function(params) {
         return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
+            data.book.cover = "http://i.imgur.com/FXxKSin.jpg";
             console.log(data.book);
             return data.book;
         });
