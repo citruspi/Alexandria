@@ -16,10 +16,18 @@ App.BookRoute = Ember.Route.extend({
 App.EditRoute = Ember.Route.extend({
     model: function(params) {
         return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
-            data.book.cover = "http://i.imgur.com/FXxKSin.jpg";
             console.log(data.book);
             return data.book;
         });
+    },
+    setupController: function(controller, model) {
+        controller.set('id', model.id);
+        controller.set('title', model.title);
+        controller.set('subtitle', model.subtitle);
+        controller.set('authors', model.authors);
+        controller.set('description', model.description);
+        controller.set('cover', model.cover);
+        controller.set('genres', model.genres);
     }
 });
 
