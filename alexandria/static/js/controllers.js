@@ -51,17 +51,10 @@ App.EditController = Ember.Controller.extend({
 
                     return authors;
                 },
-                genres: function() {
-
-                    var table = document.getElementById('genres').getElementsByTagName('tbody')[0];
-
-                    genres = [];
-
-                    for(var i=0; i<table.rows.length;i++){
-                        genres.push(table.rows[i].cells[0].innerHTML);
-                    }
-
-                    return genres;
+                genres: function(){
+                    tags = $("#genres").tagsManager('tags');
+                    console.log(tags);
+                    return tags;
                 }
             }).then(function(){
                 $('#feedback').hide();

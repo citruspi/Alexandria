@@ -135,41 +135,15 @@
 
     <div class="row">
 
-        <form {{action "addGenre" on="submit"}}>
+        <div class="col-lg-6">
 
-            <div class="col-lg-4">
+            <label>Genres</label>
 
-                <div class="form-group">
-                        {{input value=genre class="form-control" type="text" placeholder="Young Adult"}}
-                </div>
+            <form class="form-inline">
+                <input class="form-control" type="text" id="genres" class="tm-input" placeholder="Young Adult">
+            </form>
 
-            </div>
-
-            <div class="col-lg-2">
-
-                    <button class="btn" style="width:100;">Add Genre</author>
-
-            </div>
-
-            <div class="col-lg-6">
-
-                    <table class="table table-striped" id="genres">
-                        <thead>
-                            <tr>
-                                <td><strong>Genres</strong></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {{#each genres}}
-                        <tr>
-                            <td>{{ this }}</td>
-                        </tr>
-                        {{/each}}
-                        </tbody>
-                    </table>
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
@@ -181,6 +155,10 @@
                 ['para', ['ul', 'ol']],
                 ['insert', ['link', 'picture']]
             ]
+         });
+         $(".tm-input").tagsManager();
+         var genreTags = $("#genres").tagsManager({
+             prefilled: "{{unbound genres}}",
          });
     </script>
 
