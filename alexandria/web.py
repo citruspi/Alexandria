@@ -25,7 +25,7 @@ def portal():
 
     else:
 
-        return render_template('index.html')
+        return redirect(url_for('index'))
 
 
 @app.route('/logout')
