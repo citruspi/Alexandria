@@ -148,7 +148,7 @@ $('#search').bind('click', function(){
             var table = document.getElementById('authors').getElementsByTagName('tbody')[0];
             var row = table.insertRow(table.rows.length);
             var cell = row.insertCell(0);
-            var content  = document.createTextNode(author + ' (' + String.fromCharCode(215) + ')');
+            var content  = document.createTextNode(author);
             cell.appendChild(content);
         });
 
