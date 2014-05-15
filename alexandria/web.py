@@ -16,18 +16,6 @@ def index():
     return render_template('app.html')
 
 
-@app.route('/portal')
-def portal():
-
-    if not session.get('username'):
-
-        return render_template('portal.html')
-
-    else:
-
-        return redirect(url_for('index'))
-
-
 @app.route('/logout')
 def logout():
 

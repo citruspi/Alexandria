@@ -17,7 +17,7 @@ def authenticated(f):
 
         if not session.get('username'):
 
-            return redirect(url_for('portal'))
+            print 'not signed in'
 
         return f(*args, **kwargs)
     return decorated_function

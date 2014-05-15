@@ -1,4 +1,5 @@
-<html>
+<!doctype html>
+<html class="no-js" lang="en">
 
     <head>
 
@@ -18,13 +19,18 @@
         <script src="//builds.emberjs.com/handlebars-1.0.0.js"></script>
         <script src="http://builds.emberjs.com/release/ember.js"></script>
         <script src="//builds.emberjs.com/tags/v1.0.0-beta.7/ember-data.js"></script>
+        <script src="/static/libs/dropzone/dropzone.js"></script>
+        <script src="https://raw.githubusercontent.com/HackerWins/summernote/master/dist/summernote.min.js"></script>
+        <script src="https://raw.githubusercontent.com/max-favilli/tagmanager/master/tagmanager.js"></script>
+
+        {% if session['username'] %}
         <script src="/static/js/app.js"></script>
         <script src="/static/js/routes.js"></script>
         <script src="/static/js/controllers.js"></script>
         <script src="/static/js/views.js"></script>
-        <script src="/static/libs/dropzone/dropzone.js"></script>
-        <script src="https://raw.githubusercontent.com/HackerWins/summernote/master/dist/summernote.min.js"></script>
-        <script src="https://raw.githubusercontent.com/max-favilli/tagmanager/master/tagmanager.js"></script>
+        {% else %}
+        <script src="/static/js/portal.js"></script>
+        {% endif %}
 
     </body>
 
