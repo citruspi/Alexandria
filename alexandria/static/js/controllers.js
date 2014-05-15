@@ -62,4 +62,12 @@ App.EditController = Ember.Controller.extend({
             });
         }
     }
-})
+});
+
+App.UploadController = Ember.Controller.extend({
+    actions: {
+        save: function(){
+            window.dropzone.processQueue();            
+        }
+    }
+});

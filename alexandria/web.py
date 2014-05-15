@@ -48,14 +48,6 @@ def download(id, format):
 
     return response
 
-
-@app.route('/upload')
-@authenticated
-@administrator
-def upload():
-
-    return render_template('upload.html')
-
 if __name__ == "__main__":
 
 	  app.run()
