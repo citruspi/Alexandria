@@ -2,3 +2,4 @@ books
 tmp
 bower_components
 alexandria/static/libs
+node_modules
