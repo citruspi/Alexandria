@@ -34,9 +34,24 @@ module.exports = function(grunt) {
                     'fontawesome/fonts': 'font-awesome/fonts',
                 }
             }
+        },
+        ember_handlebars: {
+            compile: {
+                options: {
+                    namespace: "Ember.TEMPLATES",
+                    processName: function(filePath) {
+                        var tokens = filePath.split("/");
+                        return tokens[tokens.length - 1].replace(/.hbs/g, '');
+                    }
+                },
+                files: {
+                    "alexandria/static/js/templates.js": "alexandria/static/handlebars/*.hbs"
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-bowercopy');
+    grunt.loadNpmTasks('grunt-ember-handlebars');
 
 };
