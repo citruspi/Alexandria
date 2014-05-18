@@ -36,6 +36,6 @@ class BookView(FlaskView):
 
         mongo.Books.update({'_id':book['_id']}, book, True)
 
-        return '', 500
+        return ''
 
 BookView.register(app)
