@@ -38,7 +38,7 @@ App.EditController = Ember.Controller.extend({
                 title: this.get('title'),
                 subtitle: this.get('subtitle'),
                 cover: this.get('cover'),
-                description:  $('#description').code(),
+                description:  this.get('description'),
                 authors: function() {
                     return $("#authors").tagsManager('tags');
                 },
@@ -67,7 +67,7 @@ App.EditController = Ember.Controller.extend({
 App.UploadController = Ember.Controller.extend({
     actions: {
         save: function(){
-            window.dropzone.processQueue();            
+            window.dropzone.processQueue();
         }
     }
 });
