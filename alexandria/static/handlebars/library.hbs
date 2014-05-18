@@ -9,18 +9,18 @@
         </div>
     </div>
 
+    {{#each}}
     <div class="row">
 
-            {{#each}}
+            {{#each this}}
                 <div class="col-lg-2">
                 {{#link-to 'book' this class="thumbnail"}}
-                    <img {{bind-attr src=cover}} style="width:100%;" >
+                    <img {{bind-attr src=cover}} style="width:100%;">
                 {{/link-to}}
                 </div>
             {{/each}}
 
-        </div>
-
     </div>
+    {{/each}}
 
 <div>

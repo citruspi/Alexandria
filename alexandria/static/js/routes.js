@@ -35,7 +35,13 @@ App.EditRoute = Ember.Route.extend({
 App.LibraryRoute = Ember.Route.extend({
     model: function(){
         return Ember.$.getJSON('/api/books/').then(function(data) {
-            return data.books;
+            var chunks = [];
+
+            while (data.books.length > 0) {
+                chunks.push(data.books.splice(0,6))
+            }
+
+            return chunks;
         });
     }
 });
@@ -56,8 +62,14 @@ App.SettingsRoute = Ember.Route.extend({
 App.AuthorRoute = Ember.Route.extend({
     model: function(params){
         return Ember.$.getJSON('/api/books/author/'+params.author_id).then(function(data) {
+            var chunks = [];
+
+            while (data.books.length > 0) {
+                chunks.push(data.books.splice(0,6))
+            }
+
             return {
-                books: data.books,
+                chunks: chunks,
                 author: params.author_id
             }
         });
@@ -67,9 +79,15 @@ App.AuthorRoute = Ember.Route.extend({
 App.GenreRoute = Ember.Route.extend({
     model: function(params){
         return Ember.$.getJSON('/api/books/genre/'+params.genre_id).then(function(data) {
+            var chunks = [];
+
+            while (data.books.length > 0) {
+                chunks.push(data.books.splice(0,6))
+            }
+
             return {
-                books: data.books,
-                genre: params.genre_id
+                chunks: chunks,
+                author: params.genre_id
             }
         });
     }
