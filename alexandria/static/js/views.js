@@ -49,6 +49,8 @@ App.UploadView = Ember.View.extend({
 
               dropzone.on('addedfile', function(file){
 
+                  console.log(file.size);
+
                   file.previewElement = document.getElementsByClassName('previewsContainer')[0];
 
                   $.getJSON('/api/upload/search/'+file.name.split('.')[0], function (data) {
@@ -107,6 +109,7 @@ App.UploadView = Ember.View.extend({
              });
 
              dropzone.on('sending', function(file, xhr, formData) {
+                 formData.append('size', controller.get('filesize'));
                  formData.append('title', controller.get('title'));
                  formData.append('subtitle', controller.get('subtitle'));
                  formData.append('cover', controller.get('cover'));

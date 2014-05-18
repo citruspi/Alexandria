@@ -33,7 +33,10 @@ class UploadView(FlaskView):
 
             else:
 
-                book['formats'].append(file.filename.split('.')[-1])
+                book['formats'].append({
+                    'format': file.filename.split('.')[-1],
+                    'size': request.form.get('size')
+                })
 
                 file.save(os.path.join(app.config['LIB_DIR'], book['id'] + '.' + file.filename.split('.')[-1]))
 
@@ -51,7 +54,10 @@ class UploadView(FlaskView):
 
             else:
 
-                book['formats'].append(file.filename.split('.')[-1])
+                book['formats'].append({
+                    'format': file.filename.split('.')[-1],
+                    'size': request.form.get('size')
+                })
 
                 file.save(os.path.join(app.config['LIB_DIR'], book['id'] + '.' + file.filename.split('.')[-1]))
 
@@ -74,7 +80,10 @@ class UploadView(FlaskView):
             'genres': filter(None, request.form.get('genres').split(',')),
             'authors': request.form.get('authors').split(','),
             'owner': str(user['_id']),
-            'formats': [file.filename.split('.')[-1]]
+            'formats': [{
+                'format': file.filename.split('.')[-1],
+                'size': request.form.get('size')
+            }]
         }
 
         id = mongo.Books.insert(book);
