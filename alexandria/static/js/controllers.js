@@ -18,6 +18,7 @@ App.EditController = Ember.Controller.extend({
     actions: {
         save: function(){
             id = location.href.split("/").slice(-1);
+            controller = this;
             $.post('/api/book/'+id, {
                 title: this.get('title'),
                 subtitle: this.get('subtitle'),
@@ -29,20 +30,12 @@ App.EditController = Ember.Controller.extend({
                 genres: function(){
                     return $("#genres").tagsManager('tags');
                 }
-            }).then(function(){
-                $('#feedback').hide();
-                $('#feedback').html('Your account was successfully registerd.');
-                $('#feedback').removeClass();
-                $('#feedback').addClass('alert');
-                $('#feedback').addClass('alert-success');
-                $('#feedback').show();
-            }, function(){
-                $('#feedback').hide();
-                $('#feedback').html('There was problem registering your account.');
-                $('#feedback').removeClass();
-                $('#feedback').addClass('alert');
-                $('#feedback').addClass('alert-danger');
-                $('#feedback').show();
+            }).then(function(response){
+                controller.set('negativeResponse', null);
+                controller.set('positiveResponse', 'Your edit was successfully saved.');
+            }, function(response){
+                controller.set('positiveResponse', null);
+                controller.set('negativeResponse', 'There was a problem saving your edit.');
             });
         }
     }

@@ -18,6 +18,28 @@
 
     </div>
 
+    <br>
+
+    {{#if positiveResponse}}
+    <div class="row" style="margin-bottom:-20px;">
+
+        <div class="col-lg-12">
+            <div class="alert alert-success" id="feedback">{{positiveResponse}}</div>
+        </div>
+
+    </div>
+    {{/if}}
+
+    {{#if negativeResponse}}
+    <div class="row" style="margin-bottom:-20px;">
+
+        <div class="col-lg-12">
+            <div class="alert alert-danger" id="feedback">{{negativeResponse}}</div>
+        </div>
+
+    </div>
+    {{/if}}
+
     <hr>
 
     <div class="row">
