@@ -24,6 +24,8 @@
                 <img {{bind-attr src=cover}} style="width:100%;" >
             </a>
 
+            {{#link-to 'edit' this class="btn btn-link btn-lg pull-right"}}Edit{{/link-to}}
+
         </div>
 
         <div class="col-lg-9">
@@ -93,8 +95,6 @@
             <script type="text/javascript">
                 $('#line-3').addClass('lead');
             </script>
-
-            {{#link-to 'edit' this class="btn btn-link btn-lg pull-right"}}Edit{{/link-to}}
 
         </div>
 
