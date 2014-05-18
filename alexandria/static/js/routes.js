@@ -28,6 +28,8 @@ App.EditRoute = Ember.Route.extend({
         controller.set('description', model.description);
         controller.set('cover', model.cover);
         controller.set('genres', model.genres.join(','));
+        controller.set('positiveResponse', null);
+        controller.set('negativeResponse', null);
     }
 });
 
