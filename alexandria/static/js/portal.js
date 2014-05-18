@@ -24,41 +24,30 @@ App.PortalController = Ember.Controller.extend({
     actions: {
         login: function() {
             console.log('helo');
+            controller = this;
             $.post('/api/portal/login/', {
                 username: this.get('l_username'),
                 password: this.get('l_password')
-            }).then(function(){
-                $('#feedback').hide();
+            }).then(function(response){
                 window.location = '/';
-            }, function(){
-                $('#feedback').hide();
-                $('#feedback').html('There was problem logging you in.');
-                $('#feedback').removeClass();
-                $('#feedback').addClass('alert');
-                $('#feedback').addClass('alert-danger');
-                $('#feedback').show();
+            }, function(response){
+                controller.set('positiveResponse', null);
+                controller.set('negativeResponse', response.responseJSON.error);
             });
         },
         register: function() {
+            controller = this;
             $.post('/api/portal/register/', {
                 realname: this.get('n_realname'),
                 username: this.get('n_username'),
                 emailadd: this.get('n_emailadd'),
                 password: this.get('n_password')
-            }).then(function(){
-                $('#feedback').hide();
-                $('#feedback').html('Your account was successfully registerd.');
-                $('#feedback').removeClass();
-                $('#feedback').addClass('alert');
-                $('#feedback').addClass('alert-success');
-                $('#feedback').show();
-            }, function(){
-                $('#feedback').hide();
-                $('#feedback').html('There was problem registering your account.');
-                $('#feedback').removeClass();
-                $('#feedback').addClass('alert');
-                $('#feedback').addClass('alert-danger');
-                $('#feedback').show();
+            }).then(function(response){
+                controller.set('negativeResponse', null);
+                controller.set('positiveResponse', response.success);
+            }, function(response){
+                controller.set('positiveResponse', null);
+                controller.set('negativeResponse', response.responseJSON.error);
             });
         }
     }
