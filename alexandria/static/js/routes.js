@@ -21,15 +21,17 @@ App.EditRoute = Ember.Route.extend({
         });
     },
     setupController: function(controller, model) {
-        controller.set('id', model.id);
-        controller.set('title', model.title);
-        controller.set('subtitle', model.subtitle);
-        controller.set('authors', model.authors.join(','));
-        controller.set('description', model.description);
-        controller.set('cover', model.cover);
-        controller.set('genres', model.genres.join(','));
-        controller.set('positiveResponse', null);
-        controller.set('negativeResponse', null);
+        controller.setProperties({
+            id: model.id,
+            title: model.title,
+            subtitle: model.subtitle,
+            authors: model.authors.join(','),
+            description: model.description,
+            cover: model.cover,
+            genres: model.genres,
+            positiveResponse: null,
+            negativeResponse: null
+        });
     }
 });
 
