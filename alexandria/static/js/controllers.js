@@ -16,22 +16,6 @@ App.SettingsController = Ember.Controller.extend({
 
 App.EditController = Ember.Controller.extend({
     actions: {
-        addAuthor: function(){
-            var table = document.getElementById('authors').getElementsByTagName('tbody')[0];
-            var row = table.insertRow(table.rows.length);
-            var cell = row.insertCell(0);
-            var content  = document.createTextNode(this.get('author'));;
-            cell.appendChild(content);
-            window.flexVerticalCenter(document.getElementById('notice'));
-        },
-        addGenre: function(){
-            var table = document.getElementById('genres').getElementsByTagName('tbody')[0];
-            var row = table.insertRow(table.rows.length);
-            var cell = row.insertCell(0);
-            var content  = document.createTextNode(this.get('genre'));;
-            cell.appendChild(content);
-            window.flexVerticalCenter(document.getElementById('notice'));
-        },
         save: function(){
             id = location.href.split("/").slice(-1);
             $.post('/api/book/'+id, {
