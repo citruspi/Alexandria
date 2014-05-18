@@ -48,17 +48,29 @@
 
             <br>
 
-            <h3>Description</h3>
+            <ul class="nav nav-tabs" id="tabs">
+                <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
+                <li><a href="#genres" data-toggle="tab">Genres</a></li>
+            </ul>
 
-            <p class="lead">{{{ description }}}</p>
+            <br>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="description">
+
+                    <p class="lead">{{{ description }}}</p>
+
+                </div>
+                <div class="tab-pane" id="genres">
+
+                    <ul class="list-inline">{{#each genres}}<li><p class="lead"><a href="#/genre/{{unbound this}}">{{ this }}</a></p></li>{{/each}}</ul>
+
+                </div>
+            </div>
 
             <script type="text/javascript">
                 $('#line-3').addClass('lead');
             </script>
-
-            <h3>Genres</h3>
-            <dd><ul class="list-inline">{{#each genres}}<li><p class="lead"><a href="#/genre/{{unbound this}}">{{ this }}</a></p></li>{{/each}}</ul></dd>
-
 
             {{#link-to 'edit' this class="btn btn-link btn-lg pull-right"}}Edit{{/link-to}}
 

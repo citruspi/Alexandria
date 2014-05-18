@@ -1,4 +1,14 @@
-App.BookView = Ember.View.extend();
+App.BookView = Ember.View.extend({
+    didInsertElement : function(){
+        this._super();
+        Ember.run.scheduleOnce('afterRender', this, function(){
+            $('#tabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+        });
+    }
+});
 App.LibraryView = Ember.View.extend();
 App.AuthorView = Ember.View.extend();
 App.GenreView = Ember.View.extend();
