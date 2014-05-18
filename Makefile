@@ -24,3 +24,8 @@ libs:
 
 	cp -R bower_components/font-awesome/css alexandria/static/libs/font-awesome/.
 	cp -R bower_components/font-awesome/fonts alexandria/static/libs/font-awesome/.
+
+	mkdir alexandria/static/libs/tagmanager
+
+	cp bower_components/tagmanager/tagmanager.css alexandria/static/libs/tagmanager/.
+	cp bower_components/tagmanager/tagmanager.js alexandria/static/libs/tagmanager/.
