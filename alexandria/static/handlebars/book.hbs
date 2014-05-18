@@ -42,6 +42,7 @@
             <ul class="nav nav-tabs" id="tabs">
                 <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
                 <li><a href="#genres" data-toggle="tab">Genres</a></li>
+                <li><a href="#identifiers" data-toggle="tab">Identifiers</a></li>
                 <li><a href="#downloads" data-toggle="tab">Downloads</a></li>
             </ul>
 
@@ -58,6 +59,41 @@
                 <div class="tab-pane" id="genres">
 
                     <ul class="list-inline">{{#each genres}}<li><a href="#/genre/{{unbound this}}"><h3><span class="label label-default">{{ this }}</span></h3></a></li>{{/each}}</ul>
+
+                </div>
+
+                <div class="tab-pane" id="identifiers">
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Identifier</strong></td>
+                                        <td><strong>Value</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Alexandria</td>
+                                        <td>{{ id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ISBN 10</td>
+                                        <td>{{ isbn-10 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ISBN 13</td>
+                                        <td>{{ isbn-13 }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
