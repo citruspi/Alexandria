@@ -1,4 +1,4 @@
-['application', 'book', 'author', 'genre', 'library', 'settings', 'edit', 'upload'].forEach(function(template){
+['application', 'book', 'author', 'genre', 'library', 'settings', 'edit', 'upload', 'portal', 'menu'].forEach(function(template){
     $.ajax({
         url: '/static/handlebars/'+template+'.hbs',
         dataType: 'text',
@@ -22,6 +22,7 @@ App.Router.map(function () {
     this.resource('library');
     this.resource('settings');
     this.resource('upload');
+    this.resource('portal');
     this.resource('book', { path: '/book/:book_id' });
     this.resource('edit', { path: '/edit/:book_id' });
     this.resource('genre', { path: '/genre/:genre_id' });

@@ -33,6 +33,11 @@ module.exports = function(grunt) {
                     'fontawesome/css': 'font-awesome/css',
                     'fontawesome/fonts': 'font-awesome/fonts',
                 }
+            },
+            jquerycookie: {
+                files: {
+                    'jquerycookie/jquery.cookie.js': 'jquery.cookie/jquery.cookie.js'
+                }
             }
         },
         ember_handlebars: {

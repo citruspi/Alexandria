@@ -6,10 +6,16 @@ import json
 from bson import json_util
 from bson.objectid import ObjectId
 import bcrypt
+import os
 
 class LoginView(FlaskView):
 
     route_prefix = '/api/portal/'
+
+    def delete(self):
+
+        print request.form.get('username')
+        print request.args.get('username')
 
     def post(self):
 
@@ -24,11 +30,16 @@ class LoginView(FlaskView):
 
                 if bcrypt.hashpw(password.encode('utf-8'), user['password'].encode('utf-8')) == user['password']:
 
-                    session['username'] = username
-            	    session['role'] = user['role']
-                    session['realname'] = user['realname']
+                    token = os.urandom(15).encode('hex')
 
-                    return jsonify(success='The user \'' + username + '\' was successfully logged in.'), 200
+                    user['tokens'].append({
+                        'token': token
+                    })
+
+                    mongo.Users.update({'_id':user['_id']}, user, True)
+
+                    return jsonify(success='The user \'' + username + '\' was successfully logged in.',
+                                   token=token), 200
 
                 else:
 

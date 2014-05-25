@@ -1,29 +1,11 @@
 from alexandria import app, mongo
 from decorators import *
-from flask import render_template, request, jsonify, g, send_from_directory, redirect, url_for, session, flash
-import os
-import shutil
-import requests
-from pymongo import MongoClient
-from functools import wraps
-import bcrypt
-from bson.objectid import ObjectId
+from flask import render_template, send_from_directory
 
 @app.route('/', methods=['GET'])
-@authenticated
 def index():
 
     return render_template('app.html')
-
-
-@app.route('/logout')
-def logout():
-
-    session.pop('username', None)
-    session.pop('role', None)
-    session.pop('realname', None)
-
-    return redirect(url_for('index'))
 
 @app.route('/download/<id>/<format>')
 @authenticated

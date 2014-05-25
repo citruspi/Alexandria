@@ -1,3 +1,8 @@
+App.LibraryView = Ember.View.extend();
+App.AuthorView = Ember.View.extend();
+App.GenreView = Ember.View.extend();
+App.SettingsView = Ember.View.extend();
+
 App.BookView = Ember.View.extend({
     didInsertElement : function(){
         this._super();
@@ -9,10 +14,6 @@ App.BookView = Ember.View.extend({
         });
     }
 });
-App.LibraryView = Ember.View.extend();
-App.AuthorView = Ember.View.extend();
-App.GenreView = Ember.View.extend();
-App.SettingsView = Ember.View.extend();
 
 App.EditView = Ember.View.extend({
       didInsertElement : function(){

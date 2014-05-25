@@ -1,22 +1,48 @@
+App.AuthenticatedRoute = Ember.Route.extend({
+    beforeModel: function (transition) {
+        if (!window.user.get('token')){
+            var loginController = this.controllerFor('portal');
+            loginController.set('previousTransition', transition);
+            this.transitionTo('portal');
+        }
+    },
+    events: {
+        error: function(reason, transition){
+            if (reason.status === 403) {
+                var loginController = this.controllerFor('portal');
+                loginController.set('previousTransition', transition);
+                this.transitionTo('portal');
+            }
+        }
+    }
+});
+
 App.IndexRoute = Ember.Route.extend({
     beforeModel: function() {
         this.transitionTo('library');
     }
 });
 
-App.BookRoute = Ember.Route.extend({
+App.BookRoute = App.AuthenticatedRoute.extend({
     model: function(params) {
-        return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
+        return Ember.$.getJSON('/api/book/'+params.book_id, {token:window.user.get('token')}).then(function(data){
             console.log(data.book);
             return data.book;
         });
     }
 });
 
-App.EditRoute = Ember.Route.extend({
+App.PortalRoute = Ember.Route.extend({
+    beforeModel: function(transition){
+        if (window.user.get('token')){
+            this.transitionTo('library');
+        }
+    }
+})
+
+App.EditRoute = App.AuthenticatedRoute.extend({
     model: function(params) {
-        return Ember.$.getJSON('/api/book/'+params.book_id).then(function(data){
-            console.log(data.book);
+        return Ember.$.getJSON('/api/book/'+params.book_id, {token:window.user.get('token')}).then(function(data){
             return data.book;
         });
     },
@@ -35,10 +61,9 @@ App.EditRoute = Ember.Route.extend({
     }
 });
 
-
-App.LibraryRoute = Ember.Route.extend({
+App.LibraryRoute = App.AuthenticatedRoute.extend({
     model: function(){
-        return Ember.$.getJSON('/api/books/').then(function(data) {
+        return $.getJSON('/api/books/', {token:window.user.get('token')}).then(function(data) {
             var chunks = [];
 
             while (data.books.length > 0) {
@@ -50,9 +75,9 @@ App.LibraryRoute = Ember.Route.extend({
     }
 });
 
-App.SettingsRoute = Ember.Route.extend({
+App.SettingsRoute = App.AuthenticatedRoute.extend({
     model: function(){
-        return Ember.$.getJSON('/api/settings/').then(function(data) {
+        return Ember.$.getJSON('/api/settings/', {token:window.user.get('token')}).then(function(data) {
             return data.settings;
             console.log(data);
         });
@@ -63,9 +88,9 @@ App.SettingsRoute = Ember.Route.extend({
     }
 });
 
-App.AuthorRoute = Ember.Route.extend({
+App.AuthorRoute = App.AuthenticatedRoute.extend({
     model: function(params){
-        return Ember.$.getJSON('/api/books/author/'+params.author_id).then(function(data) {
+        return Ember.$.getJSON('/api/books/author/'+params.author_id, {token:window.user.get('token')}).then(function(data) {
             var chunks = [];
 
             while (data.books.length > 0) {
@@ -80,9 +105,9 @@ App.AuthorRoute = Ember.Route.extend({
     }
 });
 
-App.GenreRoute = Ember.Route.extend({
+App.GenreRoute = App.AuthenticatedRoute.extend({
     model: function(params){
-        return Ember.$.getJSON('/api/books/genre/'+params.genre_id).then(function(data) {
+        return Ember.$.getJSON('/api/books/genre/'+params.genre_id, {token:window.user.get('token')}).then(function(data) {
             var chunks = [];
 
             while (data.books.length > 0) {

@@ -54,7 +54,8 @@ class RegisterView(FlaskView):
                     'preferences' : {
                         'confirm' : True,
                         'authorized' : []
-                    }
+                    },
+                    'tokens' : []
                 })
 
                 return jsonify(success='Registration completed successfully. You may now login.'), 201

@@ -14,7 +14,7 @@ class SettingsView(FlaskView):
     @authenticated
     def get(self):
 
-        query = mongo.Users.find_one({'username': session['username']})
+        query = mongo.Users.find_one({'tokens.token': request.args.get('token')})
 
         settings = json.loads(json_util.dumps(query, default=json_util.default))
 
@@ -27,7 +27,7 @@ class SettingsView(FlaskView):
     @authenticated
     def post(self):
 
-        account = mongo.Users.find_one({'username': session['username']})
+        account = mongo.Users.find_one({'tokens.token': request.form.get('token')})
 
         if request.form.get('realname'):
 
