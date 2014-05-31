@@ -38,6 +38,8 @@ type Book struct {
 	ISBN13        string        `bson:"isbn-13"          json:"isbn-13"`
 	Owner         string        `bson:"owner"            json:"owner"`
 	Formats       []Format      `bson:"formats"          json:"formats"`
+	Genres        []string      `bson:"genres"           json:"genres"`
+	Authors       []string      `bson:"authors"          json:"authors"`
 }
 
 type Format struct {
@@ -149,6 +151,8 @@ func main() {
 
 		user := User{}
 		token := req.URL.Query().Get("token")
+		genre := req.URL.Query().Get("genre")
+		author := req.URL.Query().Get("author")
 
 		n, err := db.C("Users").Find(bson.M{"tokens.token": token}).Count()
 
@@ -169,7 +173,13 @@ func main() {
 
 			fmt.Println(user.Id.Hex())
 
-			err = db.C("Books").Find(bson.M{"owner": user.Id.Hex()}).All(&result)
+			if (genre == "") && (author == "") {
+				err = db.C("Books").Find(bson.M{"owner": user.Id.Hex()}).All(&result)
+			} else if genre != "" {
+				err = db.C("Books").Find(bson.M{"owner": user.Id.Hex(), "genres": genre}).All(&result)
+			} else if author != "" {
+				err = db.C("Books").Find(bson.M{"owner": user.Id.Hex(), "authors": author}).All(&result)
+			}
 
 			if err != nil {
 				panic(err)
