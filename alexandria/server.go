@@ -1,9 +1,11 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
 	"net/http"
 
+	"code.google.com/p/go.crypto/bcrypt"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"labix.org/v2/mgo"
@@ -43,10 +45,31 @@ type Format struct {
 	Size   string `bson:"size"      json:"size"`
 }
 
+type Feedback struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
 const (
+	token_length = 40
 	mongodb_host = "localhost"
 	mongodb_db   = "Alexandria"
 )
+
+func randtoken(length int) string {
+
+	const alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&?"
+	var bytes = make([]byte, length)
+
+	rand.Read(bytes)
+
+	for i, b := range bytes {
+		bytes[i] = alphanum[b%byte(len(alphanum))]
+	}
+
+	return string(bytes)
+
+}
 
 func main() {
 
@@ -64,6 +87,57 @@ func main() {
 
 	m := martini.Classic()
 	m.Use(render.Renderer())
+
+	m.Post("/api/portal/login/", func(req *http.Request, r render.Render) {
+
+		username := req.PostFormValue("username")
+
+		n, err := db.C("Users").Find(bson.M{"username": username}).Count()
+
+		if err != nil {
+			panic(err)
+		}
+
+		if n != 1 {
+			feedback := Feedback{}
+			feedback.Success = false
+			feedback.Message = "The username '" + username + "' is not registered."
+			r.JSON(403, feedback)
+		} else {
+			user := User{}
+
+			err = db.C("Users").Find(bson.M{"username": username}).One(&user)
+
+			if err != nil {
+				panic(err)
+			}
+
+			password := req.PostFormValue("password")
+
+			err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+
+			if err == nil {
+				token := Token{}
+				token.Token = randtoken(token_length)
+
+				user.Tokens = append(user.Tokens, token)
+
+				err := db.C("Users").Update(bson.M{"_id": user.Id}, user)
+
+				if err != nil {
+					panic(err)
+				}
+
+				r.JSON(200, token)
+			} else {
+				feedback := Feedback{}
+				feedback.Success = false
+				feedback.Message = "The username and password did not match."
+				r.JSON(403, feedback)
+			}
+		}
+
+	})
 
 	m.Get("/books/", func(req *http.Request, r render.Render) {
 
