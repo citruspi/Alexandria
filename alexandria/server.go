@@ -91,49 +91,55 @@ func main() {
 	m.Post("/api/portal/login/", func(req *http.Request, r render.Render) {
 
 		username := req.PostFormValue("username")
+		password := req.PostFormValue("password")
 
-		n, err := db.C("Users").Find(bson.M{"username": username}).Count()
-
-		if err != nil {
-			panic(err)
-		}
-
-		if n != 1 {
+		if (username == "") || (password == "") {
 			feedback := Feedback{}
 			feedback.Success = false
-			feedback.Message = "The username '" + username + "' is not registered."
-			r.JSON(403, feedback)
+			feedback.Message = "The form is not completely filled out."
+			r.JSON(400, feedback)
 		} else {
-			user := User{}
-
-			err = db.C("Users").Find(bson.M{"username": username}).One(&user)
+			n, err := db.C("Users").Find(bson.M{"username": username}).Count()
 
 			if err != nil {
 				panic(err)
 			}
 
-			password := req.PostFormValue("password")
+			if n != 1 {
+				feedback := Feedback{}
+				feedback.Success = false
+				feedback.Message = "The username '" + username + "' is not registered."
+				r.JSON(403, feedback)
+			} else {
+				user := User{}
 
-			err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-
-			if err == nil {
-				token := Token{}
-				token.Token = randtoken(token_length)
-
-				user.Tokens = append(user.Tokens, token)
-
-				err := db.C("Users").Update(bson.M{"_id": user.Id}, user)
+				err = db.C("Users").Find(bson.M{"username": username}).One(&user)
 
 				if err != nil {
 					panic(err)
 				}
 
-				r.JSON(200, token)
-			} else {
-				feedback := Feedback{}
-				feedback.Success = false
-				feedback.Message = "The username and password did not match."
-				r.JSON(403, feedback)
+				err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+
+				if err == nil {
+					token := Token{}
+					token.Token = randtoken(token_length)
+
+					user.Tokens = append(user.Tokens, token)
+
+					err := db.C("Users").Update(bson.M{"_id": user.Id}, user)
+
+					if err != nil {
+						panic(err)
+					}
+
+					r.JSON(200, token)
+				} else {
+					feedback := Feedback{}
+					feedback.Success = false
+					feedback.Message = "The username and password did not match."
+					r.JSON(403, feedback)
+				}
 			}
 		}
 
