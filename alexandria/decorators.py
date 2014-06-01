@@ -24,8 +24,7 @@ def authenticated(f):
 
             if not (token and user):
 
-                #abort(403)
-                pass
+                abort(403)
 
         elif request.method == 'POST':
 
@@ -34,13 +33,11 @@ def authenticated(f):
 
             if not (token and user):
 
-                #abort(403)
-                pass
+                abort(403)
 
         else:
 
-            #abort(405)
-            pass
+            abort(405)
 
         return f(*args, **kwargs)
     return decorated_function
